@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Where Are You</string>
+    <string name="dummy_button">Дурацкая кнопка</string>
+    <string name="attention_msg">Внимание!</string>
+    <string name="permissions_request_introduction_title">Требуются разрешения</string>
+    <string name="permissions_request_introduction_msg">Сейчас будут запрошены разрешения, без которых приложение не сможет работать. Просим подтвердить все запрашиваемые разрешения.</string>
+    <string name="permissions_request_epilogue_title">Требуются разрешения</string>
+    <string name="permissions_request_epilogue_msg">Пожалуйста примите все запрошенные разрешения. Без них работа приложения невозможна.</string>
+    <string name="permissions_request_epilogue_ok_btn">Предоставить разрешения</string>
+    <string name="permissions_request_epilogue_cancel_btn">Нет, выйти из приложения</string>
+</resources>

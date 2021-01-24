@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mainFragment">
+
+    <fragment
+        android:id="@+id/locationRequestFragment"
+        android:name="ru.yodata.whereareyou.view.LocationRequestFragment"
+        android:label="fragment_location_request"
+        tools:layout="@layout/fragment_location_request" />
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="ru.yodata.whereareyou.view.MainFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_locationRequestFragment"
+            app:destination="@id/locationRequestFragment" />
+    </fragment>
+</navigation>
