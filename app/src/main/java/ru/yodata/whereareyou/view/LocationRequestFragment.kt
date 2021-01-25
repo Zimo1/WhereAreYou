@@ -11,9 +11,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -33,6 +35,9 @@ class LocationRequestFragment : Fragment(R.layout.fragment_location_request), Lo
         requireContext().getSystemService(Context.LOCATION_SERVICE)
                 as LocationManager}
     private val locationListener = MyLocationListener(this)
+    private lateinit var myMap: GoogleMap
+    private var mapReady = false
+    private lateinit var marker: Marker
 
     private val callback = OnMapReadyCallback { googleMap ->
         /**
@@ -44,9 +49,13 @@ class LocationRequestFragment : Fragment(R.layout.fragment_location_request), Lo
          * install it inside the SupportMapFragment. This method will only be triggered once the
          * user has installed Google Play services and returned to the app.
          */
-        val sydney = LatLng(-34.0, 151.0)
+        myMap = googleMap
+        mapReady = true
+        /*val sydney = LatLng(-34.0, 151.0)
         googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        googleMap.animateCamera(CameraUpdateFactory.zoomTo(10F))*/
+
     }
 
     /*@SuppressLint("MissingPermission")
@@ -76,22 +85,30 @@ class LocationRequestFragment : Fragment(R.layout.fragment_location_request), Lo
         super.onViewCreated(view, savedInstanceState)
         // Необходимо для View Binding:
         _locationFrag = FragmentLocationRequestBinding.bind(view)
+        // Запустить отрисовку карты
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
+
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        // Выключить получение локаций
+        // Выключить получение локаций от датчиков
         locationManager.removeUpdates(locationListener)
         // Необходимо для View Binding:
         _locationFrag = null
     }
 
     override fun onLocationChanged(newLocation: Location) {
-        //super.onLocationChanged(newLocation)
+        var point = LatLng(newLocation.latitude, newLocation.longitude)
         locationFrag.gpsCoordinatesTv.text =
                 "${newLocation.latitude.toString()} : ${newLocation.longitude.toString()}"
+        if (mapReady) {
+            if (::marker.isInitialized) marker.remove()
+            marker = myMap.addMarker(MarkerOptions().position(point).title("It's me!"))
+            myMap.moveCamera(CameraUpdateFactory.newLatLng(point))
+            myMap.moveCamera(CameraUpdateFactory.zoomTo(17F))
+        }
 
     }
 }
