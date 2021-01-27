@@ -20,6 +20,7 @@ val askPermissions = arrayOf<String>(
         // Разрешения получения местоположения
         Manifest.permission.ACCESS_FINE_LOCATION,
         Manifest.permission.ACCESS_COARSE_LOCATION,
+        //Manifest.permission.ACCESS_BACKGROUND_LOCATION,
         // Разрешения для работы с SMS
         Manifest.permission.RECEIVE_SMS,
         Manifest.permission.READ_SMS,

@@ -11,4 +11,5 @@
     <string name="permissions_request_epilogue_msg">Please accept all requested permissions. Without them, the application can not work.</string>
     <string name="permissions_request_epilogue_ok_btn">Grant permissions</string>
     <string name="permissions_request_epilogue_cancel_btn">No, exit the app</string>
+    <string name="no_gps_signal_msg">No GPS data available</string>
 </resources>
