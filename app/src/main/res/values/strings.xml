@@ -12,4 +12,6 @@
     <string name="permissions_request_epilogue_ok_btn">Grant permissions</string>
     <string name="permissions_request_epilogue_cancel_btn">No, exit the app</string>
     <string name="no_gps_signal_msg">No GPS data available</string>
+    <string name="gps_provider_off_msg">GPS is disabled. Turn on the GPS!</string>
+    <string name="satellite_quan_msg">Satellites: %1$d</string>
 </resources>

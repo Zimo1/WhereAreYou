@@ -10,4 +10,6 @@
     <string name="permissions_request_epilogue_ok_btn">Предоставить разрешения</string>
     <string name="permissions_request_epilogue_cancel_btn">Нет, выйти из приложения</string>
     <string name="no_gps_signal_msg">Нет данных GPS</string>
+    <string name="gps_provider_off_msg">GPS отключен. Включите GPS!</string>
+    <string name="satellite_quan_msg">Спутников: %1$d</string>
 </resources>

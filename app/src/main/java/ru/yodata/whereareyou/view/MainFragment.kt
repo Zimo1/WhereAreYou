@@ -103,6 +103,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     // его работа невозможна.
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>,
                                             grantResults: IntArray) {
+        // Проверить даны ли пользователем запрошенные разрешения
         if (!PermissionsAccess.finishRequestSuccessful(
                         requireContext(),
                         this,

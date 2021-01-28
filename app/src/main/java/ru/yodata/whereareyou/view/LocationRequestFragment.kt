@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.location.GnssStatus
 import android.location.Location
+import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Build
 import androidx.fragment.app.Fragment
@@ -12,6 +13,7 @@ import android.text.method.DateTimeKeyListener
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -31,26 +33,85 @@ import java.util.*
 private var _locationFrag: FragmentLocationRequestBinding? = null
 private val locationFrag get() = _locationFrag!!
 
-class LocationRequestFragment : Fragment(R.layout.fragment_location_request), LocationListenable {
+class LocationRequestFragment : Fragment(R.layout.fragment_location_request) { //, LocationListenable {
+
+    private lateinit var myMap: GoogleMap
+    private var mapReady = false
+    private lateinit var marker: Marker
 
     private val locationManager : LocationManager by lazy {
         requireContext().getSystemService(Context.LOCATION_SERVICE)
                 as LocationManager}
-    private val locationListener = MyLocationListener(this)
-    private lateinit var myMap: GoogleMap
-    private var mapReady = false
-    private lateinit var marker: Marker
+
+    private val locationListener = object : LocationListener {//MyLocationListener(this) {
+        override fun onProviderDisabled(provider: String) {
+            if (provider == LocationManager.GPS_PROVIDER) {
+                Toast.makeText(
+                        requireContext(),
+                        getString(R.string.gps_provider_off_msg),
+                        Toast.LENGTH_LONG
+                ).show()
+                locationFrag.gpsStatusTv.text = getString(R.string.gps_provider_off_msg)
+            }
+        }
+
+        override fun onLocationChanged(newLocation: Location) {
+            var point = LatLng(newLocation.latitude, newLocation.longitude)
+            with (newLocation) {
+                with(locationFrag) {
+                    latitudeTv.text = latitude.toString()
+                    longitudeTv.text = longitude.toString()
+                    altitudeTv.text = altitude.toString()
+                    speedTv.text = speed.toString()
+                    var moment = Date(time)
+                    timeTv.text = String.format("%02d:%02d:%02d",
+                                                moment.hours, moment.minutes, moment.seconds)
+                }
+            }
+            if (mapReady) {
+                if (::marker.isInitialized) marker.remove()
+                with (myMap) {
+                    marker = addMarker(MarkerOptions().title("Это я!").position(point))
+                    moveCamera(CameraUpdateFactory.newLatLng(point))
+                    moveCamera(CameraUpdateFactory.zoomTo(18F))
+                }
+            }
+
+        }
+    }
 
     private val mapReadyCallback = OnMapReadyCallback { googleMap ->
         myMap = googleMap
         mapReady = true
     }
 
-    /*@RequiresApi(Build.VERSION_CODES.N)
-    private val gnssStatusCallback = GnssStatus.Callback {
+    @RequiresApi(Build.VERSION_CODES.N)
+    private val gnssStatusCallback = object : GnssStatus.Callback() {
+        /*override fun onSatelliteStatusChanged(status: GnssStatus) {
+            //super.onSatelliteStatusChanged(status)
+            locationFrag.gpsStatusTv.text =  String.format(getString(R.string.satellite_quan_msg),
+                    status.satelliteCount)
 
-    }*/
 
+        }*/
+
+        override fun onFirstFix(ttffMillis: Int) {
+            //super.onFirstFix(ttffMillis)
+            locationFrag.gpsStatusTv.text = "Фикс"
+        }
+
+        override fun onStarted() {
+            //super.onStarted()
+            locationFrag.gpsStatusTv.text = "Старт"
+        }
+
+        override fun onStopped() {
+            //super.onStopped()
+            locationFrag.gpsStatusTv.text = "Стоп"
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("MissingPermission")
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
@@ -60,7 +121,7 @@ class LocationRequestFragment : Fragment(R.layout.fragment_location_request), Lo
                 Settings.locationMinTimeMs,
                 Settings.locationMinDistanceM,
                 locationListener)
-        //locationManager.registerGnssStatusCallback()
+        locationManager.registerGnssStatusCallback(gnssStatusCallback, null)
         return inflater.inflate(R.layout.fragment_location_request, container, false)
     }
 
@@ -82,27 +143,6 @@ class LocationRequestFragment : Fragment(R.layout.fragment_location_request), Lo
         _locationFrag = null
     }
 
-    override fun onLocationChanged(newLocation: Location) {
-        var point = LatLng(newLocation.latitude, newLocation.longitude)
-        with (newLocation) {
-            with(locationFrag) {
-                latitudeTv.text = latitude.toString()
-                longitudeTv.text = longitude.toString()
-                altitudeTv.text = altitude.toString()
-                speedTv.text = speed.toString()
-                var moment = Date(time)
-                timeTv.text = "${(moment.hours)}:${(moment.minutes)}:${(moment.seconds)}"
-            }
-        }
-        if (mapReady) {
-            if (::marker.isInitialized) marker.remove()
-            with (myMap) {
-                marker = addMarker(MarkerOptions().title("Это я!").position(point))
-                moveCamera(CameraUpdateFactory.newLatLng(point))
-                moveCamera(CameraUpdateFactory.zoomTo(18F))
-            }
-        }
 
-    }
 
 }

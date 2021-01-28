@@ -51,7 +51,7 @@ val askPermissions = arrayOf<String>(
     <string name="permissions_request_epilogue_msg">Пожалуйста примите все запрошенные разрешения. Без них работа приложения невозможна.</string>
     <string name="permissions_request_epilogue_ok_btn">Предоставить разрешения</string>
     <string name="permissions_request_epilogue_cancel_btn">Нет, выйти из приложения</string>
-Содержание надписей можно изменить по своему желанию, имена строк менять нельзя.
+Содержание надписей можно изменить по своему усмотрению, имена строк менять нельзя.
 
 4. В функцию onCreateView фрагмента внести:
     if (savedInstanceState == null) PermissionsAccess.startRequest(
@@ -60,6 +60,7 @@ val askPermissions = arrayOf<String>(
 5. Внутри класса фрагмента переопределить метод onRequestPermissionsResult. Скопировать:
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>,
                                             grantResults: IntArray) {
+        // Проверить даны ли пользователем запрошенные разрешения
         if (!PermissionsAccess.finishRequestSuccessful(
                         requireContext(),
                         this,
@@ -69,7 +70,7 @@ val askPermissions = arrayOf<String>(
 
 */
 
-open class PermissionsAccess {  //: ActivityCompat.OnRequestPermissionsResultCallback {
+open class PermissionsAccess {
 
     companion object {
         const val TAG = "PERM"

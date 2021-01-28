@@ -18,7 +18,7 @@ import android.location.LocationListener
         requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager}
 */
 
-class MyLocationListener (
+open class MyLocationListener (
     private val locationListenableInterface : LocationListenable) : LocationListener {
 
     override fun onLocationChanged(newLocation: Location) {
