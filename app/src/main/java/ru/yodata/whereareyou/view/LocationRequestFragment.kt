@@ -43,7 +43,7 @@ class LocationRequestFragment : Fragment(R.layout.fragment_location_request) { /
         requireContext().getSystemService(Context.LOCATION_SERVICE)
                 as LocationManager}
 
-    private val locationListener = object : LocationListener {//MyLocationListener(this) {
+    private val locationListener = object : LocationListener { //MyLocationListener(this) {
         override fun onProviderDisabled(provider: String) {
             if (provider == LocationManager.GPS_PROVIDER) {
                 Toast.makeText(
@@ -61,8 +61,9 @@ class LocationRequestFragment : Fragment(R.layout.fragment_location_request) { /
                 with(locationFrag) {
                     latitudeTv.text = latitude.toString()
                     longitudeTv.text = longitude.toString()
+                    accuracyTv.text = accuracy.toString()
                     altitudeTv.text = altitude.toString()
-                    speedTv.text = speed.toString()
+                    speedTv.text = (speed / 1000 * 3600).toString() // данные переводятся в км/ч
                     var moment = Date(time)
                     timeTv.text = String.format("%02d:%02d:%02d",
                                                 moment.hours, moment.minutes, moment.seconds)
@@ -73,15 +74,16 @@ class LocationRequestFragment : Fragment(R.layout.fragment_location_request) { /
                 with (myMap) {
                     marker = addMarker(MarkerOptions().title("Это я!").position(point))
                     moveCamera(CameraUpdateFactory.newLatLng(point))
-                    moveCamera(CameraUpdateFactory.zoomTo(18F))
+                    //moveCamera(CameraUpdateFactory.zoomTo(Settings.mapZoom))
                 }
             }
-
         }
     }
 
     private val mapReadyCallback = OnMapReadyCallback { googleMap ->
         myMap = googleMap
+        //val cameraUpdateFactory = CameraUpdateFactory.zoomTo(Settings.mapZoom)
+        myMap.uiSettings.isZoomControlsEnabled = true
         mapReady = true
     }
 
@@ -91,37 +93,30 @@ class LocationRequestFragment : Fragment(R.layout.fragment_location_request) { /
             //super.onSatelliteStatusChanged(status)
             locationFrag.gpsStatusTv.text =  String.format(getString(R.string.satellite_quan_msg),
                     status.satelliteCount)
-
-
         }*/
 
         override fun onFirstFix(ttffMillis: Int) {
             //super.onFirstFix(ttffMillis)
             locationFrag.gpsStatusTv.text = "Фикс"
+            // Установить первоначальный масштаб изображения карты
+            myMap.moveCamera(CameraUpdateFactory.zoomTo(Settings.mapZoom))
         }
 
         override fun onStarted() {
             //super.onStarted()
-            locationFrag.gpsStatusTv.text = "Старт"
+            locationFrag.gpsStatusTv.text = "Старт..."
         }
 
-        override fun onStopped() {
+        /*override fun onStopped() {
             //super.onStopped()
             locationFrag.gpsStatusTv.text = "Стоп"
-        }
+        }*/
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
-    @SuppressLint("MissingPermission")
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Включить получение локаций от датчиков местоположения (отключение - в onDestroyView)
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                Settings.locationMinTimeMs,
-                Settings.locationMinDistanceM,
-                locationListener)
-        locationManager.registerGnssStatusCallback(gnssStatusCallback, null)
+
         return inflater.inflate(R.layout.fragment_location_request, container, false)
     }
 
@@ -135,14 +130,36 @@ class LocationRequestFragment : Fragment(R.layout.fragment_location_request) { /
 
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
+    @SuppressLint("MissingPermission")
+    override fun onStart() {
+        super.onStart()
+        // Включить получение локаций от датчиков местоположения (отключение - в onStop)
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                Settings.locationMinTimeMs,
+                Settings.locationMinDistanceM,
+                locationListener)
+        //locationManager.registerGnssStatusCallback(gnssStatusCallback, null)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    @SuppressLint("MissingPermission")
+    override fun onResume() {
+        super.onResume()
+        locationManager.registerGnssStatusCallback(gnssStatusCallback, null)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        // Запомнить текущий масштаб карты, чтобы восстановиться в этом же масштабе
+        Settings.mapZoom = myMap.getCameraPosition().zoom
         // Выключить получение локаций от датчиков
         locationManager.removeUpdates(locationListener)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
         // Необходимо для View Binding:
         _locationFrag = null
     }
-
-
 
 }

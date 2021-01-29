@@ -18,5 +18,8 @@ class Settings {
         // Настройки locationManager.requestLocationUpdates - получение локаций от датчика GPS
         var locationMinTimeMs: Long = 2000 // Через какое время происходит обновление локации (мс)
         var locationMinDistanceM: Float = 2.0F // При сдвиге на какое расстояние (м)
+
+        // Настройки карты
+        var mapZoom = 18F // Масштаб изображения карты
     }
 }
