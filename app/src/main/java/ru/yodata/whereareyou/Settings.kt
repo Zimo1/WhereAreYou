@@ -1,5 +1,7 @@
 package ru.yodata.whereareyou
 
+import android.location.Location
+
 const val SEPARATOR = "*" // Разделитель значений в тексте SMS
 const val SMS_HEADER = SEPARATOR + "WAY" // Заголовок SMS
 const val LATITUDE = "N" // Северная широта
@@ -13,6 +15,16 @@ const val INFO = "I" // Тип сообщения: Инфо
 const val REQUEST_ID ="#" // Идентификатор запроса
 const val MESSAGE = ":" // Комментарий
 
+// Функция-расширение для встроенного класса Location.
+// Зеркально отображает значение bearing (которое задано в градусах отклонения от направления
+// на север по часовой стрелке)
+fun Location.mirrorBearing() = 360 - this.bearing
+/*: Float {
+    val curBearing = this.bearing
+    if (curBearing > 180) return 180 - curBearing
+    else return curBearing - 180
+}*/
+
 class Settings {
     companion object {
         // Настройки locationManager.requestLocationUpdates - получение локаций от датчика GPS
@@ -21,5 +33,7 @@ class Settings {
 
         // Настройки карты
         var mapZoom = 18F // Масштаб изображения карты
+        var mapTilt = 30F // Угол наклона карты к наблюдателю
+
     }
 }

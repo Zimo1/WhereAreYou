@@ -12,4 +12,6 @@
     <string name="no_gps_signal_msg">Нет данных GPS</string>
     <string name="gps_provider_off_msg">GPS отключен. Включите GPS!</string>
     <string name="satellite_quan_msg">Спутников: %1$d</string>
+    <string name="gps_fix_msg">Фикс</string>
+    <string name="gps_start_msg">Старт...</string>
 </resources>

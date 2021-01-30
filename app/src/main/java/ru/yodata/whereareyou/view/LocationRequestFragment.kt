@@ -19,13 +19,8 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
-import ru.yodata.whereareyou.LocationListenable
-import ru.yodata.whereareyou.MyLocationListener
-import ru.yodata.whereareyou.R
-import ru.yodata.whereareyou.Settings
+import com.google.android.gms.maps.model.*
+import ru.yodata.whereareyou.*
 import ru.yodata.whereareyou.databinding.FragmentLocationRequestBinding
 import java.util.*
 
@@ -36,7 +31,8 @@ private val locationFrag get() = _locationFrag!!
 class LocationRequestFragment : Fragment(R.layout.fragment_location_request) { //, LocationListenable {
 
     private lateinit var myMap: GoogleMap
-    private var mapReady = false
+    private var mapReady = false // Карта готова к отрисовке
+    private var gpsFixed = false // Фикс произошел
     private lateinit var marker: Marker
 
     private val locationManager : LocationManager by lazy {
@@ -44,6 +40,9 @@ class LocationRequestFragment : Fragment(R.layout.fragment_location_request) { /
                 as LocationManager}
 
     private val locationListener = object : LocationListener { //MyLocationListener(this) {
+        // Функция отрабатывает отключение провайдера GPS.
+        // Ее реализация обязательна, иначе при выключеном GPS это приложение будет вылетать
+        // на старте с ошибкой, т.к. вызываемый метод onProviderDisabled абстрактный.
         override fun onProviderDisabled(provider: String) {
             if (provider == LocationManager.GPS_PROVIDER) {
                 Toast.makeText(
@@ -72,9 +71,21 @@ class LocationRequestFragment : Fragment(R.layout.fragment_location_request) { /
             if (mapReady) {
                 if (::marker.isInitialized) marker.remove()
                 with (myMap) {
-                    marker = addMarker(MarkerOptions().title("Это я!").position(point))
-                    moveCamera(CameraUpdateFactory.newLatLng(point))
-                    //moveCamera(CameraUpdateFactory.zoomTo(Settings.mapZoom))
+                    marker = addMarker(MarkerOptions().title("Это я!")
+                            .position(point)
+                            .icon(BitmapDescriptorFactory
+                                    .fromResource(R.drawable.circle_arrow_red_32)).anchor(0.5F,0.5F)
+                            //.flat(true)
+                            //.rotation(newLocation.bearing)
+                            )
+                    //moveCamera(CameraUpdateFactory.newLatLng(point))
+                    val cameraPosition = CameraPosition.Builder()
+                            .target(point)
+                            .zoom(getCameraPosition().zoom)
+                            .bearing(newLocation.bearing)
+                            .tilt(Settings.mapTilt)
+                            .build()
+                    animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
                 }
             }
         }
@@ -82,7 +93,6 @@ class LocationRequestFragment : Fragment(R.layout.fragment_location_request) { /
 
     private val mapReadyCallback = OnMapReadyCallback { googleMap ->
         myMap = googleMap
-        //val cameraUpdateFactory = CameraUpdateFactory.zoomTo(Settings.mapZoom)
         myMap.uiSettings.isZoomControlsEnabled = true
         mapReady = true
     }
@@ -97,14 +107,15 @@ class LocationRequestFragment : Fragment(R.layout.fragment_location_request) { /
 
         override fun onFirstFix(ttffMillis: Int) {
             //super.onFirstFix(ttffMillis)
-            locationFrag.gpsStatusTv.text = "Фикс"
+            locationFrag.gpsStatusTv.text = getString(R.string.gps_fix_msg)
+            gpsFixed = true
             // Установить первоначальный масштаб изображения карты
             myMap.moveCamera(CameraUpdateFactory.zoomTo(Settings.mapZoom))
         }
 
         override fun onStarted() {
             //super.onStarted()
-            locationFrag.gpsStatusTv.text = "Старт..."
+            locationFrag.gpsStatusTv.text = getString(R.string.gps_start_msg)
         }
 
         /*override fun onStopped() {
@@ -150,8 +161,9 @@ class LocationRequestFragment : Fragment(R.layout.fragment_location_request) { /
 
     override fun onStop() {
         super.onStop()
-        // Запомнить текущий масштаб карты, чтобы восстановиться в этом же масштабе
-        Settings.mapZoom = myMap.getCameraPosition().zoom
+        // Запомнить текущий масштаб карты, чтобы восстановиться в этом же масштабе.
+        // Делать это нужно только если фикс уже произошел, иначе запомнится неверный масштаб (весь мир)
+        if (gpsFixed) Settings.mapZoom = myMap.getCameraPosition().zoom
         // Выключить получение локаций от датчиков
         locationManager.removeUpdates(locationListener)
     }

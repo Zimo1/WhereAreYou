@@ -14,4 +14,6 @@
     <string name="no_gps_signal_msg">No GPS data available</string>
     <string name="gps_provider_off_msg">GPS is disabled. Turn on the GPS!</string>
     <string name="satellite_quan_msg">Satellites: %1$d</string>
+    <string name="gps_fix_msg">Fix</string>
+    <string name="gps_start_msg">Starting...</string>
 </resources>
