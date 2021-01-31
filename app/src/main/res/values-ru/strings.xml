@@ -14,4 +14,13 @@
     <string name="satellite_quan_msg">Спутников: %1$d</string>
     <string name="gps_fix_msg">Фикс</string>
     <string name="gps_start_msg">Старт...</string>
+    <string name="gps_status_label">GPS-статус:</string>
+    <string name="latitude_label">Широта:</string>
+    <string name="longitude_label">Долгота:</string>
+    <string name="accuracy_label">Точность (м):</string>
+    <string name="altitude_label">Высота (м):</string>
+    <string name="speed_label">Скорость (км/ч):</string>
+    <string name="last_time_label">Последнее время:</string>
+    <string name="itsme_msg">Это я!</string>
+    <string name="gps_provider_on_msg">GPS включен</string>
 </resources>

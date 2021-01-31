@@ -9,7 +9,6 @@ import android.location.LocationManager
 import android.os.Build
 import androidx.fragment.app.Fragment
 import android.os.Bundle
-import android.text.method.DateTimeKeyListener
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,21 +27,32 @@ import java.util.*
 private var _locationFrag: FragmentLocationRequestBinding? = null
 private val locationFrag get() = _locationFrag!!
 
+// Фрагмент, в котором происходит работа с GPS и картой
 class LocationRequestFragment : Fragment(R.layout.fragment_location_request) { //, LocationListenable {
 
-    private lateinit var myMap: GoogleMap
-    private var mapReady = false // Карта готова к отрисовке
-    private var gpsFixed = false // Фикс произошел
-    private lateinit var marker: Marker
+    private lateinit var myMap: GoogleMap // Хранит ссылку на готовую карту
+    private var mapReady = false // Флаг "Карта готова к работе"
+    private var gpsFixed = false // Флаг "Фикс произошел"
+    private lateinit var marker: Marker // Маркер положения пользователя на карте
 
     private val locationManager : LocationManager by lazy {
         requireContext().getSystemService(Context.LOCATION_SERVICE)
                 as LocationManager}
 
-    private val locationListener = object : LocationListener { //MyLocationListener(this) {
+    private val locationListener = object : LocationListener {
+
+        // Функция отрабатывает включение провайдера GPS.
+        // Ее реализация обязательна, даже пустая, иначе при включении GPS после его выключения
+        // это приложение будет вылетать с ошибкой, т.к. вызываемый при этом метод onProviderEnabled
+        // абстрактный.
+        override fun onProviderEnabled(provider: String) {
+            locationFrag.gpsStatusTv.text = getString(R.string.gps_provider_on_msg)
+            locationFrag.gpsStatusTv.setTextColor(PREPARE_COLOR)
+        }
+
         // Функция отрабатывает отключение провайдера GPS.
-        // Ее реализация обязательна, иначе при выключеном GPS это приложение будет вылетать
-        // на старте с ошибкой, т.к. вызываемый метод onProviderDisabled абстрактный.
+        // Ее реализация обязательна, даже пустая, иначе при выключеном GPS это приложение будет
+        // вылетать на старте с ошибкой, т.к. вызываемый при этом метод onProviderDisabled абстрактный.
         override fun onProviderDisabled(provider: String) {
             if (provider == LocationManager.GPS_PROVIDER) {
                 Toast.makeText(
@@ -51,11 +61,22 @@ class LocationRequestFragment : Fragment(R.layout.fragment_location_request) { /
                         Toast.LENGTH_LONG
                 ).show()
                 locationFrag.gpsStatusTv.text = getString(R.string.gps_provider_off_msg)
+                locationFrag.gpsStatusTv.setTextColor(ALERT_COLOR)
             }
         }
 
+        // Функция отрабатывала изменение статуса провайдера GPS, но более не применяется.
+        // Вместо нее работает GnssStatus.Callback(), см. ниже
+        override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
+            super.onStatusChanged(provider, status, extras)
+        }
+
+        // Это основная функция лиснера - она вызывается для каждой новой локации, поступившей от
+        // датчиков GPS. Здесь происходит вывод на экран сведений о локации, отрисовывается карта
+        // и маркер положения пользователя на ней.
         override fun onLocationChanged(newLocation: Location) {
             var point = LatLng(newLocation.latitude, newLocation.longitude)
+            // Вывести на экран текстовые сведения о полученной локации
             with (newLocation) {
                 with(locationFrag) {
                     latitudeTv.text = latitude.toString()
@@ -68,21 +89,22 @@ class LocationRequestFragment : Fragment(R.layout.fragment_location_request) { /
                                                 moment.hours, moment.minutes, moment.seconds)
                 }
             }
+            // Вывести на карте маркер полученной локации
             if (mapReady) {
                 if (::marker.isInitialized) marker.remove()
                 with (myMap) {
-                    marker = addMarker(MarkerOptions().title("Это я!")
+                    marker = addMarker(MarkerOptions().title(getString(R.string.itsme_msg))
                             .position(point)
                             .icon(BitmapDescriptorFactory
                                     .fromResource(R.drawable.circle_arrow_red_32)).anchor(0.5F,0.5F)
                             //.flat(true)
                             //.rotation(newLocation.bearing)
                             )
-                    //moveCamera(CameraUpdateFactory.newLatLng(point))
+                    // Настроить параметры камеры для отображения карты
                     val cameraPosition = CameraPosition.Builder()
                             .target(point)
                             .zoom(getCameraPosition().zoom)
-                            .bearing(newLocation.bearing)
+                            .bearing(newLocation.bearing) // камера будет поворачиваться по направлению движения
                             .tilt(Settings.mapTilt)
                             .build()
                     animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
@@ -91,12 +113,16 @@ class LocationRequestFragment : Fragment(R.layout.fragment_location_request) { /
         }
     }
 
+    // Колбек срабатывает когда карта асинхронно создана вызовом getMapAsync
     private val mapReadyCallback = OnMapReadyCallback { googleMap ->
-        myMap = googleMap
-        myMap.uiSettings.isZoomControlsEnabled = true
-        mapReady = true
+        myMap = googleMap // получить ссылку на готовую карту в myMap
+        myMap.uiSettings.isZoomControlsEnabled = true // добавить на карту кнопки масштабирования
+        mapReady = true // установить флаг готовности карты
     }
 
+    // Колбек срабатывает при изменении статуса GPS.
+    // Здесь используется только для отображения статуса на экране, поэтому не особо важен
+    // для работы приложения
     @RequiresApi(Build.VERSION_CODES.N)
     private val gnssStatusCallback = object : GnssStatus.Callback() {
         /*override fun onSatelliteStatusChanged(status: GnssStatus) {
@@ -105,29 +131,33 @@ class LocationRequestFragment : Fragment(R.layout.fragment_location_request) { /
                     status.satelliteCount)
         }*/
 
-        override fun onFirstFix(ttffMillis: Int) {
-            //super.onFirstFix(ttffMillis)
-            locationFrag.gpsStatusTv.text = getString(R.string.gps_fix_msg)
-            gpsFixed = true
-            // Установить первоначальный масштаб изображения карты
-            myMap.moveCamera(CameraUpdateFactory.zoomTo(Settings.mapZoom))
-        }
-
+        // Функция отрабатывает начало процесса вычисления координат текущего положения пользователя
+        // GPS-провайдером
         override fun onStarted() {
             //super.onStarted()
+            // Вывести на экран сообщение об установке GPS-статуса "Старт"
             locationFrag.gpsStatusTv.text = getString(R.string.gps_start_msg)
+            locationFrag.gpsStatusTv.setTextColor(PREPARE_COLOR)
+            locationFrag.startProgressBar.visibility = View.VISIBLE
         }
 
-        /*override fun onStopped() {
-            //super.onStopped()
-            locationFrag.gpsStatusTv.text = "Стоп"
-        }*/
+        // Функция отрабатывает момент первого успешного завершения определения координат
+        // текущего положения пользователя (фикс)
+        override fun onFirstFix(ttffMillis: Int) {
+            //super.onFirstFix(ttffMillis)
+            // Вывести на экран сообщение об установке GPS-статуса "Фикс"
+            locationFrag.gpsStatusTv.text = getString(R.string.gps_fix_msg)
+            locationFrag.gpsStatusTv.setTextColor(ALL_RIGHT_COLOR)
+            locationFrag.startProgressBar.visibility = View.INVISIBLE
+            gpsFixed = true
+            // Установить первоначальный масштаб изображения карты (из настроек)
+            myMap.moveCamera(CameraUpdateFactory.zoomTo(Settings.mapZoom))
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-
         return inflater.inflate(R.layout.fragment_location_request, container, false)
     }
 
@@ -138,7 +168,6 @@ class LocationRequestFragment : Fragment(R.layout.fragment_location_request) { /
         // Запустить отрисовку карты
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(mapReadyCallback)
-
     }
 
     @SuppressLint("MissingPermission")
@@ -156,7 +185,15 @@ class LocationRequestFragment : Fragment(R.layout.fragment_location_request) { /
     @SuppressLint("MissingPermission")
     override fun onResume() {
         super.onResume()
+        // Включить отслеживание статуса GPS
         locationManager.registerGnssStatusCallback(gnssStatusCallback, null)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    override fun onPause() {
+        super.onPause()
+        // Отключить отслеживание статуса GPS
+        locationManager.unregisterGnssStatusCallback(gnssStatusCallback)
     }
 
     override fun onStop() {
@@ -166,12 +203,15 @@ class LocationRequestFragment : Fragment(R.layout.fragment_location_request) { /
         if (gpsFixed) Settings.mapZoom = myMap.getCameraPosition().zoom
         // Выключить получение локаций от датчиков
         locationManager.removeUpdates(locationListener)
+        gpsFixed = false
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         // Необходимо для View Binding:
         _locationFrag = null
+        // Сбросить флаг готовности карты
+        mapReady = false
     }
 
 }

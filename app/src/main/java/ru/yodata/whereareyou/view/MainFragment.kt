@@ -33,11 +33,8 @@ val askPermissions = arrayOf<String>(
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [MainFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+// Главный экран.
+// С него начинается работа приложения
 class MainFragment : Fragment(R.layout.fragment_main) {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -66,6 +63,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _mainFrag = FragmentMainBinding.bind(view)
+        // Кнопка перехода на экран работы с GPS и картой
         mainFrag.getLocationBtn.setOnClickListener{ view ->
                 view.findNavController()
                 .navigate(R.id.action_mainFragment_to_locationRequestFragment)}
@@ -76,7 +74,6 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         // Необходимо для View Binding:
         _mainFrag = null
     }
-
 
     companion object {
         /**

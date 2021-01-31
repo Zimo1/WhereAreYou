@@ -16,4 +16,13 @@
     <string name="satellite_quan_msg">Satellites: %1$d</string>
     <string name="gps_fix_msg">Fix</string>
     <string name="gps_start_msg">Starting...</string>
+    <string name="gps_status_label">GPS-status:</string>
+    <string name="latitude_label">Latitude:</string>
+    <string name="longitude_label">Longitude:</string>
+    <string name="accuracy_label">Accuracy (m):</string>
+    <string name="altitude_label">Altitude (m):</string>
+    <string name="speed_label">Speed (km/h):</string>
+    <string name="last_time_label">Last time:</string>
+    <string name="itsme_msg">It\'s me!</string>
+    <string name="gps_provider_on_msg">GPS is enabled</string>
 </resources>

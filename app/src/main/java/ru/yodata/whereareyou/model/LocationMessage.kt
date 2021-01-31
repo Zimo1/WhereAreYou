@@ -10,7 +10,8 @@ data class LocationMessage(
         val requestId: Int, // Идентификатор запроса, ответом на который является данное сообщение
         val type: LocationMessageType, // Тип сообщения, enam, см. ниже
         val incoming: Boolean, // Сообщение входящее или исходящее
-        val location: Location, // Стандартные данные локации
+        val location: Location, // Стандартные данные локации отправителя
+        val chargingPercentage: Int, // Процент зарядки аккумулятора смартфона отправителя
         val message: String, // Комментарий, передаваемый внутри сообщения
         val phoneNumber: String, // Номер телефона абонента, который прислал сообщение или которому оно послано
         val locationTimestamp: Timestamp, // возможно не нужен, время есть в Location

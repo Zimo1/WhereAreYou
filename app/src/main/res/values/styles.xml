@@ -13,4 +13,16 @@
     <style name="CommonLabelStyle">
         <item name="android:textColor">@color/black</item>
     </style>
+
+    <style name="AlertValueStyle" parent="CommonValueStyle">
+        <item name="android:textColor">@android:color/holo_red_dark</item>
+    </style>
+
+    <style name="PreparationtValueStyle" parent="CommonValueStyle">
+        <item name="android:textColor">@android:color/holo_orange_light</item>
+    </style>
+
+    <style name="AllRightValueStyle" parent="CommonValueStyle">
+        <item name="android:textColor">@android:color/holo_green_dark</item>
+    </style>
 </resources>
