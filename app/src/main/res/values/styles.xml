@@ -25,4 +25,10 @@
     <style name="AllRightValueStyle" parent="CommonValueStyle">
         <item name="android:textColor">@android:color/holo_green_dark</item>
     </style>
+
+    <style name="CommonScreenHeaderStyle">
+        <item name="android:textColor">@color/light_blue_900</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>

@@ -9,7 +9,11 @@
         android:id="@+id/locationRequestFragment"
         android:name="ru.yodata.whereareyou.view.LocationRequestFragment"
         android:label="fragment_location_request"
-        tools:layout="@layout/fragment_location_request" />
+        tools:layout="@layout/fragment_location_request" >
+        <action
+            android:id="@+id/action_locationRequestFragment_to_sendLocationFragment"
+            app:destination="@id/sendLocationFragment" />
+    </fragment>
     <fragment
         android:id="@+id/mainFragment"
         android:name="ru.yodata.whereareyou.view.MainFragment"
@@ -19,4 +23,9 @@
             android:id="@+id/action_mainFragment_to_locationRequestFragment"
             app:destination="@id/locationRequestFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/sendLocationFragment"
+        android:name="ru.yodata.whereareyou.view.SendLocationFragment"
+        android:label="fragment_send_location"
+        tools:layout="@layout/fragment_send_location" />
 </navigation>

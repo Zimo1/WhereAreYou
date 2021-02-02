@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.navigation.findNavController
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -40,7 +41,6 @@ class LocationRequestFragment : Fragment(R.layout.fragment_location_request) { /
                 as LocationManager}
 
     private val locationListener = object : LocationListener {
-
         // Функция отрабатывает включение провайдера GPS.
         // Ее реализация обязательна, даже пустая, иначе при включении GPS после его выключения
         // это приложение будет вылетать с ошибкой, т.к. вызываемый при этом метод onProviderEnabled
@@ -91,7 +91,7 @@ class LocationRequestFragment : Fragment(R.layout.fragment_location_request) { /
             }
             // Вывести на карте маркер полученной локации
             if (mapReady) {
-                if (::marker.isInitialized) marker.remove()
+                if (::marker.isInitialized) marker.remove() // стереть предыдущий маркер с карты, если он есть
                 with (myMap) {
                     marker = addMarker(MarkerOptions().title(getString(R.string.itsme_msg))
                             .position(point)
@@ -135,20 +135,30 @@ class LocationRequestFragment : Fragment(R.layout.fragment_location_request) { /
         // GPS-провайдером
         override fun onStarted() {
             //super.onStarted()
-            // Вывести на экран сообщение об установке GPS-статуса "Старт"
-            locationFrag.gpsStatusTv.text = getString(R.string.gps_start_msg)
-            locationFrag.gpsStatusTv.setTextColor(PREPARE_COLOR)
-            locationFrag.startProgressBar.visibility = View.VISIBLE
+            with (locationFrag) {
+                // Вывести на экран сообщение об установке GPS-статуса "Старт"
+                gpsStatusTv.text = getString(R.string.gps_start_msg)
+                gpsStatusTv.setTextColor(PREPARE_COLOR)
+                // Включить прогрессбар
+                startProgressBar.visibility = View.VISIBLE
+                // Деактивировать кнопку перехода на экран передачи данных
+                toSendLocationScreenBtn.isEnabled = false
+            }
         }
 
         // Функция отрабатывает момент первого успешного завершения определения координат
         // текущего положения пользователя (фикс)
         override fun onFirstFix(ttffMillis: Int) {
             //super.onFirstFix(ttffMillis)
-            // Вывести на экран сообщение об установке GPS-статуса "Фикс"
-            locationFrag.gpsStatusTv.text = getString(R.string.gps_fix_msg)
-            locationFrag.gpsStatusTv.setTextColor(ALL_RIGHT_COLOR)
-            locationFrag.startProgressBar.visibility = View.INVISIBLE
+            with (locationFrag) {
+                // Вывести на экран сообщение об установке GPS-статуса "Фикс"
+                gpsStatusTv.text = getString(R.string.gps_fix_msg)
+                gpsStatusTv.setTextColor(ALL_RIGHT_COLOR)
+                // Убрать прогрессбар
+                startProgressBar.visibility = View.INVISIBLE
+                // Активировать кнопку перехода на экран передачи данных
+                toSendLocationScreenBtn.isEnabled = true
+            }
             gpsFixed = true
             // Установить первоначальный масштаб изображения карты (из настроек)
             myMap.moveCamera(CameraUpdateFactory.zoomTo(Settings.mapZoom))
@@ -168,6 +178,10 @@ class LocationRequestFragment : Fragment(R.layout.fragment_location_request) { /
         // Запустить отрисовку карты
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(mapReadyCallback)
+        // Назначить лиснер кнопке перехода на экран передачи местоположения другому пользователю
+        locationFrag.toSendLocationScreenBtn.setOnClickListener{ view ->
+            view.findNavController()
+                .navigate(R.id.action_locationRequestFragment_to_sendLocationFragment)}
     }
 
     @SuppressLint("MissingPermission")
