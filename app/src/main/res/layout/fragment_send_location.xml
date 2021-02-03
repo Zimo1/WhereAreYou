@@ -156,16 +156,17 @@
 
     <EditText
         android:id="@+id/commentTvEd"
+        style="@style/CommonValueStyle"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginTop="8dp"
         android:ems="10"
         android:gravity="start|top"
         android:inputType="textMultiLine"
+        android:text="Тест"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView7"
-        style="@style/CommonValueStyle" />
+        app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
     <TextView
         android:id="@+id/textView8"
@@ -185,6 +186,7 @@
         android:layout_marginTop="8dp"
         android:ems="10"
         android:inputType="phone"
+        android:text="+7"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
@@ -202,11 +204,11 @@
         android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:background="?android:attr/listDivider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recipientPhoneTvEd" />
+        app:layout_constraintTop_toBottomOf="@+id/makeRequestCBox" />
 
     <Button
         android:id="@+id/sendLocationBtn"
@@ -217,5 +219,14 @@
         android:text="@string/sendLocationBtn_label"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider" />
+
+    <CheckBox
+        android:id="@+id/makeRequestCBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/make_request_cbox_label"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recipientPhoneTvEd" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -29,4 +29,5 @@
     <string name="contactListBtn_label">Контакты</string>
     <string name="sendLocationBtn_label">Передать</string>
     <string name="toSendLocationScreenBtn_label">Передать</string>
+    <string name="make_request_cbox_label">Запросить местоположение получателя</string>
 </resources>

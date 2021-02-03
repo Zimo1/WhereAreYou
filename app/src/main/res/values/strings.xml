@@ -31,4 +31,5 @@
     <string name="contactListBtn_label">Contacts</string>
     <string name="sendLocationBtn_label">Send</string>
     <string name="toSendLocationScreenBtn_label">Send</string>
+    <string name="make_request_cbox_label">Request the recipient\'s location</string>
 </resources>

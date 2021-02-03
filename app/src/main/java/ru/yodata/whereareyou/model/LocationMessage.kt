@@ -13,7 +13,7 @@ data class LocationMessage(
         val location: Location, // Стандартные данные локации отправителя
         val chargingPercentage: Int, // Процент зарядки аккумулятора смартфона отправителя
         val message: String, // Комментарий, передаваемый внутри сообщения
-        val phoneNumber: String, // Номер телефона абонента, который прислал сообщение или которому оно послано
+        val abonentPhoneNumber: String, // Номер телефона абонента, который прислал сообщение или которому оно послано
         val locationTimestamp: Timestamp, // возможно не нужен, время есть в Location
         val messageSendDate: Date, // Дата и время отсылки сообщения
         val messageSendTime: Time,

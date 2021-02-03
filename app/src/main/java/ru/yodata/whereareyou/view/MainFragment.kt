@@ -25,7 +25,8 @@ val askPermissions = arrayOf<String>(
         Manifest.permission.RECEIVE_SMS,
         Manifest.permission.READ_SMS,
         Manifest.permission.SEND_SMS,
-        Manifest.permission.READ_CONTACTS
+        Manifest.permission.READ_CONTACTS,
+        Manifest.permission.READ_PHONE_STATE // для данных о SIM-картах
 )
 
 // TODO: Rename parameter arguments, choose names that match

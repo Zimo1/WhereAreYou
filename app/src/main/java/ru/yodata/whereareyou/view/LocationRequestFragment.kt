@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.navigation.findNavController
+import androidx.navigation.navGraphViewModels
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -22,6 +23,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import ru.yodata.whereareyou.*
 import ru.yodata.whereareyou.databinding.FragmentLocationRequestBinding
+import ru.yodata.whereareyou.viewmodel.LastLocationViewModel
 import java.util.*
 
 // Инициализация View Binding
@@ -31,6 +33,7 @@ private val locationFrag get() = _locationFrag!!
 // Фрагмент, в котором происходит работа с GPS и картой
 class LocationRequestFragment : Fragment(R.layout.fragment_location_request) { //, LocationListenable {
 
+    private val lastLocationViewModel: LastLocationViewModel by navGraphViewModels(R.id.nav_graph)
     private lateinit var myMap: GoogleMap // Хранит ссылку на готовую карту
     private var mapReady = false // Флаг "Карта готова к работе"
     private var gpsFixed = false // Флаг "Фикс произошел"
@@ -40,6 +43,7 @@ class LocationRequestFragment : Fragment(R.layout.fragment_location_request) { /
         requireContext().getSystemService(Context.LOCATION_SERVICE)
                 as LocationManager}
 
+    // Реализация объекта-лиснера локаций
     private val locationListener = object : LocationListener {
         // Функция отрабатывает включение провайдера GPS.
         // Ее реализация обязательна, даже пустая, иначе при включении GPS после его выключения
@@ -75,7 +79,10 @@ class LocationRequestFragment : Fragment(R.layout.fragment_location_request) { /
         // датчиков GPS. Здесь происходит вывод на экран сведений о локации, отрисовывается карта
         // и маркер положения пользователя на ней.
         override fun onLocationChanged(newLocation: Location) {
+            // Переменная для отображения позиции на карте
             var point = LatLng(newLocation.latitude, newLocation.longitude)
+            // Записать новую локацию во вьюмодель
+            lastLocationViewModel.setLocation(newLocation)
             // Вывести на экран текстовые сведения о полученной локации
             with (newLocation) {
                 with(locationFrag) {

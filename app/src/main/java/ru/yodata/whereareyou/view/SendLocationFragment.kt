@@ -5,7 +5,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.navigation.navGraphViewModels
 import ru.yodata.whereareyou.R
+import ru.yodata.whereareyou.databinding.FragmentLocationRequestBinding
+import ru.yodata.whereareyou.databinding.FragmentSendLocationBinding
+import ru.yodata.whereareyou.viewmodel.LastLocationViewModel
+import java.util.*
+
+// Инициализация View Binding
+private var _sendLocFrag: FragmentSendLocationBinding? = null
+private val sendLocFrag get() = _sendLocFrag!!
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -17,7 +27,10 @@ private const val ARG_PARAM2 = "param2"
  * Use the [SendLocationFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class SendLocationFragment : Fragment() {
+class SendLocationFragment : Fragment(R.layout.fragment_send_location) {
+
+    private val lastLocationViewModel: LastLocationViewModel by navGraphViewModels(R.id.nav_graph)
+
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -35,6 +48,39 @@ class SendLocationFragment : Fragment() {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_send_location, container, false)
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        // Необходимо для View Binding:
+        _sendLocFrag = FragmentSendLocationBinding.bind(view)
+        with (lastLocationViewModel.location.value!!) {
+            with (sendLocFrag) {
+                latitudeTv.text = latitude.toString()
+                longitudeTv.text = longitude.toString()
+                accuracyTv.text = accuracy.toString()
+                altitudeTv.text = altitude.toString()
+                speedTv.text = (speed / 1000 * 3600).toString() // данные переводятся в км/ч
+                var moment = Date(time)
+                timeTv.text = String.format("%02d:%02d:%02d",
+                        moment.hours, moment.minutes, moment.seconds)
+            }
+        }
+        sendLocFrag.contactListBtn.setOnClickListener {view ->
+            Toast.makeText(
+                    requireContext(),
+                    "Выбор из Контактов пока не реализован. Введите номер вручную",
+                    Toast.LENGTH_LONG
+            ).show()
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // Необходимо для View Binding:
+        _sendLocFrag = null
+    }
+
+
 
     companion object {
         /**
