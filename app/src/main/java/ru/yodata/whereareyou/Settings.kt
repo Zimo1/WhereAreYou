@@ -12,27 +12,28 @@ const val PREPARE_COLOR = Color.BLUE //0xFFFFBB33 // Желтый
 const val ALL_RIGHT_COLOR = Color.GREEN //0xFF669900 // Зеленый
 
 const val MAX_USER_MESSAGE_SIZE = 100 // Максимальная длина комментария пользователя к локации
-const val APPREF = "https://..." // Ссылка в Google Play на установку этого приложения
+const val APPREF = "https://aaaa.com" // Ссылка в Google Play на установку этого приложения
 
+// Служебные символы и строки сообщения LocationMessage
 const val SEPARATOR = " " // Разделитель значений в тексте SMS
 const val PREFIX = "*" // Префикс аргумента (по нему определяется начало аргумента)
 const val EQALITY = "=" // Знак равенства (или знак, предшествующий значению аргумента)
 const val SMS_HEADER = PREFIX + "GPS" // Заголовок SMS
-const val VERSION = "1" // Версия приложения, в котором было создано SMS. Используется чтобы понимать
+const val VERSION = "01" // Версия приложения, в котором было создано SMS. Используется чтобы понимать
                         // может ли текущая версия приложения правильно обработать данное SMS
-
-// Аргументы:
+// Аргументы сообщения LocationMessage (значения должны быть разными!):
+const val REQUEST = "R" // Тип сообщения: Запрос
+const val ANSWER = "W" // Тип сообщения: Ответ
+const val INFO = "I" // Тип сообщения: Инфо
 const val LATITUDE = "N" // Северная широта
 const val LONGITUDE = "E" // Восточная долгота
 const val ALTITUDE = "A" // Высота
 const val SPEED = "S" // Скорость
 const val TIME = "T"  // Время
 const val CHARGING = "C" // Зарядка аккумулятора
-const val REQUEST = "R" // Тип сообщения: Запрос
-const val ANSWER = "W" // Тип сообщения: Ответ
-const val INFO = "I" // Тип сообщения: Инфо
-const val REQUEST_ID ="#" // Идентификатор запроса
-const val MESSAGE = "M" // Комментарий
+const val ID = "D" // Идентификатор сообщения
+const val REQUEST_ID ="Q" // Идентификатор запроса, ответом на который является это сообщение
+const val COMMENT = "M" // Комментарий
 const val LINK = "L" // Ссылка в Google Play на установку этого приложения
 
 

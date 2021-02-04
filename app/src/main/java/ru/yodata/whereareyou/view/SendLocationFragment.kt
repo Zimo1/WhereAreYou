@@ -7,9 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.navGraphViewModels
+import ru.yodata.whereareyou.MySender
 import ru.yodata.whereareyou.R
 import ru.yodata.whereareyou.databinding.FragmentLocationRequestBinding
 import ru.yodata.whereareyou.databinding.FragmentSendLocationBinding
+import ru.yodata.whereareyou.model.LocationMessage
+import ru.yodata.whereareyou.model.LocationMessageType
 import ru.yodata.whereareyou.viewmodel.LastLocationViewModel
 import java.util.*
 
@@ -65,13 +68,15 @@ class SendLocationFragment : Fragment(R.layout.fragment_send_location) {
                         moment.hours, moment.minutes, moment.seconds)
             }
         }
-        sendLocFrag.contactListBtn.setOnClickListener {view ->
+        sendLocFrag.contactListBtn.setOnClickListener {
             Toast.makeText(
                     requireContext(),
                     "Выбор из Контактов пока не реализован. Введите номер вручную",
                     Toast.LENGTH_LONG
             ).show()
         }
+        sendLocFrag.sendLocationBtn.isEnabled = true
+        sendLocFrag.sendLocationBtn.setOnClickListener { view -> sendButtonListener(view) }
     }
 
     override fun onDestroyView() {
@@ -80,6 +85,22 @@ class SendLocationFragment : Fragment(R.layout.fragment_send_location) {
         _sendLocFrag = null
     }
 
+    fun sendButtonListener(view: View) {
+        with(sendLocFrag) {
+            MySender.sendLocationMessage(requireContext(),
+                    LocationMessage(id = 1,
+                            requestId = 0,
+                            type = if (makeRequestCBox.isChecked) LocationMessageType.REQUEST
+                                    else LocationMessageType.INFO,
+                            incoming = false,
+                            location = lastLocationViewModel.location.value!!,
+                            chargingPercentage = 0,
+                            comment = commentTvEd.text.toString(),
+                            abonentPhoneNumber = recipientPhoneTvEd.text.toString(),
+                    ))
+            view.isEnabled = false
+        }
+    }
 
 
     companion object {
