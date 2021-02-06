@@ -1,2 +1,3 @@
+include ':locationmessagereceiver'
 include ':app'
 rootProject.name = "Where Are You"

@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">LocationMessageReceiver</string>
+    <string name="title_activity_receive">Map</string>
+</resources>

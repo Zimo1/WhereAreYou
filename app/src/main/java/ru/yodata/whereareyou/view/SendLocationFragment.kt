@@ -32,6 +32,7 @@ private const val ARG_PARAM2 = "param2"
  */
 class SendLocationFragment : Fragment(R.layout.fragment_send_location) {
 
+    // ViewModel хранит последнее полученное значение Location, привязана к навигационному графу
     private val lastLocationViewModel: LastLocationViewModel by navGraphViewModels(R.id.nav_graph)
 
     // TODO: Rename and change types of parameters

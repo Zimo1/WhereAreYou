@@ -33,6 +33,7 @@ private val locationFrag get() = _locationFrag!!
 // Фрагмент, в котором происходит работа с GPS и картой
 class LocationRequestFragment : Fragment(R.layout.fragment_location_request) { //, LocationListenable {
 
+    // ViewModel хранит последнее полученное значение Location, привязана к навигационному графу
     private val lastLocationViewModel: LastLocationViewModel by navGraphViewModels(R.id.nav_graph)
     private lateinit var myMap: GoogleMap // Хранит ссылку на готовую карту
     private var mapReady = false // Флаг "Карта готова к работе"
@@ -112,7 +113,7 @@ class LocationRequestFragment : Fragment(R.layout.fragment_location_request) { /
                             .target(point)
                             .zoom(getCameraPosition().zoom)
                             .bearing(newLocation.bearing) // камера будет поворачиваться по направлению движения
-                            .tilt(Settings.mapTilt)
+                            .tilt(Settings.mapTilt) // угол наклона карты к наблюдателю
                             .build()
                     animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
                 }
