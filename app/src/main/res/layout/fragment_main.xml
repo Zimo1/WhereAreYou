@@ -9,8 +9,11 @@
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:id="@+id/textView"
+        style="@style/CommonScreenHeaderStyle"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:padding="5dp"
         android:text="Главный экран"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,7 +23,7 @@
         android:id="@+id/getLocationBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Получить координаты"
+        android:text="Передать координаты"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

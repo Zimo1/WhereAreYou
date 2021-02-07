@@ -1,11 +1,8 @@
 package ru.yodata.whereareyou
 
-import android.app.Application
 import android.graphics.Color
-import android.graphics.Color.pack
-import android.graphics.Color.toArgb
-import android.location.Location
 
+const val TAG = "SMS"
 // Константы цветов:
 const val ALERT_COLOR = Color.RED //0xFFCC0000 // Красный
 const val PREPARE_COLOR = Color.BLUE //0xFFFFBB33 // Желтый

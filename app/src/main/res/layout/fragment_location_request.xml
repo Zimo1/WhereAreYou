@@ -19,6 +19,16 @@
         app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
     <TextView
+        android:id="@+id/textView10"
+        style="@style/CommonScreenHeaderStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/location_request_screen_header"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
         android:id="@+id/textView2"
         style="@style/CommonLabelStyle"
         android:layout_width="wrap_content"
@@ -26,7 +36,7 @@
         android:layout_marginTop="8dp"
         android:text="@string/gps_status_label"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
     <TextView
         android:id="@+id/gpsStatusTv"
@@ -37,7 +47,7 @@
         android:layout_marginTop="8dp"
         android:text="@string/no_gps_signal_msg"
         app:layout_constraintStart_toEndOf="@+id/textView2"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
     <TextView
         android:id="@+id/textView3"
@@ -174,7 +184,7 @@
         android:layout_marginTop="8dp"
         android:visibility="invisible"
         app:layout_constraintStart_toEndOf="@+id/gpsStatusTv"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView10"
         tools:visibility="visible" />
 
     <Button
@@ -187,5 +197,7 @@
         android:text="@string/toSendLocationScreenBtn_label"
         app:layout_constraintBottom_toTopOf="@+id/map"
         app:layout_constraintEnd_toEndOf="parent" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

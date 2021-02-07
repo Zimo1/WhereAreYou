@@ -12,7 +12,7 @@ import android.widget.Toast
 import androidx.core.content.ContentProviderCompat.requireContext
 import ru.yodata.whereareyou.model.LocationMessage
 
-const val TAG = "SMS"
+//const val TAG = "SMS"
 const val SENT = "SMS_SENT"
 const val DELIVERED = "SMS_DELIVERED"
 

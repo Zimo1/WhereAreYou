@@ -23,11 +23,14 @@
     <string name="last_time_label">Последнее время:</string>
     <string name="itsme_msg">Это я!</string>
     <string name="gps_provider_on_msg">GPS включен</string>
-    <string name="send_sms_screen_title">Передать местоположение</string>
+    <string name="send_location_screen_title">Передать местоположение</string>
     <string name="comment_label">Комментарий:</string>
     <string name="recipient_label">Кому (номер телефона):</string>
     <string name="contactListBtn_label">Контакты</string>
     <string name="sendLocationBtn_label">Передать</string>
     <string name="toSendLocationScreenBtn_label">Передать</string>
     <string name="make_request_cbox_label">Запросить местоположение получателя</string>
+    <string name="receiver_screen_request_title">Поступил запрос вашего местоположения</string>
+    <string name="receiver_screen_info_title">Получено местоположение</string>
+    <string name="location_request_screen_header">Определение своего местоположения</string>
 </resources>

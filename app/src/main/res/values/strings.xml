@@ -25,11 +25,14 @@
     <string name="last_time_label">Last time:</string>
     <string name="itsme_msg">It\'s me!</string>
     <string name="gps_provider_on_msg">GPS is enabled</string>
-    <string name="send_sms_screen_title">Location sending</string>
+    <string name="send_location_screen_title">Location sending</string>
     <string name="comment_label">Comment:</string>
     <string name="recipient_label">Recipient (phone number):</string>
     <string name="contactListBtn_label">Contacts</string>
     <string name="sendLocationBtn_label">Send</string>
     <string name="toSendLocationScreenBtn_label">Send</string>
     <string name="make_request_cbox_label">Request the recipient\'s location</string>
+    <string name="receiver_screen_request_title">Incoming request for your location</string>
+    <string name="receiver_screen_info_title">Location received</string>
+    <string name="location_request_screen_header">" My location searching"</string>
 </resources>
