@@ -2,13 +2,13 @@ package ru.yodata.whereareyou
 
 import android.graphics.Color
 
-const val TAG = "SMS"
+const val TAG = "WHEREAREYOU"
 // Константы цветов:
 const val ALERT_COLOR = Color.RED //0xFFCC0000 // Красный
 const val PREPARE_COLOR = Color.BLUE //0xFFFFBB33 // Желтый
 const val ALL_RIGHT_COLOR = Color.GREEN //0xFF669900 // Зеленый
 
-const val MAX_USER_MESSAGE_SIZE = 100 // Максимальная длина комментария пользователя к локации
+const val MAX_USER_MESSAGE_SIZE = 300 // Максимальная длина комментария пользователя к локации
 const val APPREF = "https://aaaa.com" // Ссылка в Google Play на установку этого приложения
 
 const val SMS_BUNDLE_KEY = "SMS" // Ключ для работы с передачей данных SMS

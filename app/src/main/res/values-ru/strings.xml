@@ -30,7 +30,9 @@
     <string name="sendLocationBtn_label">Передать</string>
     <string name="toSendLocationScreenBtn_label">Передать</string>
     <string name="make_request_cbox_label">Запросить местоположение получателя</string>
-    <string name="receiver_screen_request_title">Поступил запрос вашего местоположения</string>
+    <string name="receiver_screen_request_title">Поступил запрос вашего местоположения от абонента</string>
     <string name="receiver_screen_info_title">Получено местоположение</string>
     <string name="location_request_screen_header">Определение своего местоположения</string>
+    <string name="sendAnswerBtn_label">Сообщить</string>
+    <string name="cancelAnswerBtn_label">Отказ</string>
 </resources>

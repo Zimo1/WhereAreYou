@@ -21,7 +21,10 @@ class ReceiverActivity : AppCompatActivity() {
         setContentView(activity.root)   //(R.layout.activity_receiver)
 
         val plainSms = intent.getSerializableExtra(SMS_BUNDLE_KEY) as PlainSms
-        activity.abonentTv.text = plainSms.smsText
+        with (plainSms) {
+            activity.abonentTv.text = phoneNumber
+            activity.commentTV.text = smsText
+        }
 
     }
 }

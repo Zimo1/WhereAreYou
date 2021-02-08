@@ -32,7 +32,9 @@
     <string name="sendLocationBtn_label">Send</string>
     <string name="toSendLocationScreenBtn_label">Send</string>
     <string name="make_request_cbox_label">Request the recipient\'s location</string>
-    <string name="receiver_screen_request_title">Incoming request for your location</string>
+    <string name="receiver_screen_request_title">Incoming request for your location from outside</string>
     <string name="receiver_screen_info_title">Location received</string>
     <string name="location_request_screen_header">" My location searching"</string>
+    <string name="sendAnswerBtn_label">Inform</string>
+    <string name="cancelAnswerBtn_label">Cancel</string>
 </resources>

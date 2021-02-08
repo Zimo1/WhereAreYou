@@ -17,15 +17,15 @@ import java.util.*
 // ответ на него (если требуется)
 class MySmsReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
-        Log.i(TAG, "BroadcastReceiver запущен!")
-        /*Toast.makeText(
+        Log.d(TAG, "BroadcastReceiver запущен!")
+        Toast.makeText(
             context,
             "BroadcastReceiver запущен!",
             Toast.LENGTH_LONG
-        ).show()*/
+        ).show()
         val bundle = intent?.extras // получить данные интента (SMS)
         if (bundle != null) {
-            Log.i("SMS", "BroadcastReceiver extras содержит данные")
+            Log.d(TAG, "BroadcastReceiver extras содержит данные")
             // Запись всех частей SMS в массив строк
             val smsParts = getMessagesFromIntent(intent)
             /*Toast.makeText(
@@ -39,7 +39,7 @@ class MySmsReceiver : BroadcastReceiver() {
             if (smsParts[0].displayMessageBody.take(SMS_HEADER_LENGHT) == SMS_HEADER) {
                 // Сформировать интент на вызов ReceiverActivity, в который вложить данные
                 // полученной SMS для дальнейшей обработки
-                Log.i("SMS", "Обнаружена SMS с данными локации для обработки")
+                Log.d(TAG, "Обнаружена SMS с данными локации для обработки")
                 val smsData = PlainSms(
                         phoneNumber = smsParts[0].displayOriginatingAddress, // номер телефона отправителя
                         time = Date(), // текущее время и дата
@@ -51,7 +51,7 @@ class MySmsReceiver : BroadcastReceiver() {
                     //setClassName(context!!.packageName, ReceiverActivity::class.simpleName!!)
                     //setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)} // без этого флага будет вылет
                     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)} // без этого флага будет вылет
-                Log.i("SMS", "Отправлен интент на запуск ReceiverActivity")
+                Log.d(TAG, "Отправлен интент на запуск ReceiverActivity")
                 context!!.startActivity(startIntent) // запуск интента
                 abortBroadcast() // не пропускать эту SMS дальше, чтобы она не появилась в списке SMS
             }
