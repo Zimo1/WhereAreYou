@@ -53,7 +53,7 @@ class MySmsReceiver : BroadcastReceiver() {
                     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)} // без этого флага будет вылет
                 Log.d(TAG, "Отправлен интент на запуск ReceiverActivity")
                 context!!.startActivity(startIntent) // запуск интента
-                abortBroadcast() // не пропускать эту SMS дальше, чтобы она не появилась в списке SMS
+                abortBroadcast() // не пропускать эту SMS дальше, чтобы она не появилась в списке SMS - не работает
             }
         }
         /*else Toast.makeText(

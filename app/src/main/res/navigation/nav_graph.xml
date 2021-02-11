@@ -28,4 +28,9 @@
         android:name="ru.yodata.whereareyou.view.SendLocationFragment"
         android:label="fragment_send_location"
         tools:layout="@layout/fragment_send_location" />
+    <activity
+        android:id="@+id/receiverActivity"
+        android:name="ru.yodata.whereareyou.view.ReceiverActivity"
+        android:label="activity_receiver"
+        tools:layout="@layout/activity_receiver" />
 </navigation>

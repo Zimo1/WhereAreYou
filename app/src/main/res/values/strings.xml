@@ -15,7 +15,7 @@
     <string name="gps_provider_off_msg">GPS is disabled. Turn on the GPS!</string>
     <string name="satellite_quan_msg">Satellites: %1$d</string>
     <string name="gps_fix_msg">Fix</string>
-    <string name="gps_start_msg">Starting...</string>
+    <string name="gps_start_msg">Searching...</string>
     <string name="gps_status_label">GPS-status:</string>
     <string name="latitude_label">Latitude:</string>
     <string name="longitude_label">Longitude:</string>
@@ -37,4 +37,10 @@
     <string name="location_request_screen_header">" My location searching"</string>
     <string name="sendAnswerBtn_label">Inform</string>
     <string name="cancelAnswerBtn_label">Cancel</string>
+    <string name="show_scope_label">Show:</string>
+    <string name="meScopeBtn_label">Me</string>
+    <string name="abonentScopeBtn_label">Abonent</string>
+    <string name="togetherScopeBtn_label">Both</string>
+    <string name="receiver_screen_answer_title">Received a response to your location request</string>
+    <string name="title_activity_tmp_maps">Map</string>
 </resources>

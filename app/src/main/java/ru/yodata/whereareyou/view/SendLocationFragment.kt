@@ -98,6 +98,7 @@ class SendLocationFragment : Fragment(R.layout.fragment_send_location) {
                             chargingPercentage = 0,
                             comment = commentTvEd.text.toString(),
                             abonentPhoneNumber = recipientPhoneTvEd.text.toString(),
+                            autoDetected = true
                     ))
             view.isEnabled = false
         }

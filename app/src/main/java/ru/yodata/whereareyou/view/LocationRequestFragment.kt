@@ -51,8 +51,10 @@ class LocationRequestFragment : Fragment(R.layout.fragment_location_request) { /
         // это приложение будет вылетать с ошибкой, т.к. вызываемый при этом метод onProviderEnabled
         // абстрактный.
         override fun onProviderEnabled(provider: String) {
-            locationFrag.gpsStatusTv.text = getString(R.string.gps_provider_on_msg)
-            locationFrag.gpsStatusTv.setTextColor(PREPARE_COLOR)
+            if (provider == LocationManager.GPS_PROVIDER) {
+                locationFrag.gpsStatusTv.text = getString(R.string.gps_provider_on_msg)
+                locationFrag.gpsStatusTv.setTextColor(PREPARE_COLOR)
+            }
         }
 
         // Функция отрабатывает отключение провайдера GPS.
@@ -67,6 +69,7 @@ class LocationRequestFragment : Fragment(R.layout.fragment_location_request) { /
                 ).show()
                 locationFrag.gpsStatusTv.text = getString(R.string.gps_provider_off_msg)
                 locationFrag.gpsStatusTv.setTextColor(ALERT_COLOR)
+                gpsFixed = false
             }
         }
 
@@ -108,7 +111,7 @@ class LocationRequestFragment : Fragment(R.layout.fragment_location_request) { /
                             //.flat(true)
                             //.rotation(newLocation.bearing)
                             )
-                    // Настроить параметры камеры для отображения карты
+                    // Настроить параметры камеры и отобразить карту с маркером в центре
                     val cameraPosition = CameraPosition.Builder()
                             .target(point)
                             .zoom(getCameraPosition().zoom)
@@ -144,7 +147,7 @@ class LocationRequestFragment : Fragment(R.layout.fragment_location_request) { /
         override fun onStarted() {
             //super.onStarted()
             with (locationFrag) {
-                // Вывести на экран сообщение об установке GPS-статуса "Старт"
+                // Вывести на экран сообщение об установке GPS-статуса "Поиск..."
                 gpsStatusTv.text = getString(R.string.gps_start_msg)
                 gpsStatusTv.setTextColor(PREPARE_COLOR)
                 // Включить прогрессбар

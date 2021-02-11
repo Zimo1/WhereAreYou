@@ -12,8 +12,8 @@
     <string name="no_gps_signal_msg">Нет данных GPS</string>
     <string name="gps_provider_off_msg">GPS отключен. Включите GPS!</string>
     <string name="satellite_quan_msg">Спутников: %1$d</string>
-    <string name="gps_fix_msg">Фикс</string>
-    <string name="gps_start_msg">Старт...</string>
+    <string name="gps_fix_msg">Готов</string>
+    <string name="gps_start_msg">Поиск...</string>
     <string name="gps_status_label">GPS-статус:</string>
     <string name="latitude_label">Широта:</string>
     <string name="longitude_label">Долгота:</string>
@@ -31,8 +31,13 @@
     <string name="toSendLocationScreenBtn_label">Передать</string>
     <string name="make_request_cbox_label">Запросить местоположение получателя</string>
     <string name="receiver_screen_request_title">Поступил запрос вашего местоположения от абонента</string>
-    <string name="receiver_screen_info_title">Получено местоположение</string>
+    <string name="receiver_screen_info_title">Вам сообщают о своем местоположении</string>
     <string name="location_request_screen_header">Определение своего местоположения</string>
     <string name="sendAnswerBtn_label">Сообщить</string>
-    <string name="cancelAnswerBtn_label">Отказ</string>
+    <string name="cancelAnswerBtn_label">Отменить</string>
+    <string name="show_scope_label">Показать:</string>
+    <string name="meScopeBtn_label">Я</string>
+    <string name="abonentScopeBtn_label">Абонент</string>
+    <string name="togetherScopeBtn_label">Вместе</string>
+    <string name="receiver_screen_answer_title">Поступил ответ на ваш запрос местоположения</string>
 </resources>

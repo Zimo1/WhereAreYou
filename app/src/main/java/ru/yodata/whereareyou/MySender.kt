@@ -9,13 +9,13 @@ import android.content.IntentFilter
 import android.telephony.SmsManager
 import android.util.Log
 import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
 import ru.yodata.whereareyou.model.LocationMessage
 
 //const val TAG = "SMS"
 const val SENT = "SMS_SENT"
 const val DELIVERED = "SMS_DELIVERED"
 
+// Класс для отправки сообщений с данными о локации стороннему абоненту
 class MySender {
 
     companion object {
