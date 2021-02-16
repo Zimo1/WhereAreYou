@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_mainFragment_to_locationRequestFragment"
             app:destination="@id/locationRequestFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_receiverActivity"
+            app:destination="@id/receiverActivity" />
     </fragment>
     <fragment
         android:id="@+id/sendLocationFragment"

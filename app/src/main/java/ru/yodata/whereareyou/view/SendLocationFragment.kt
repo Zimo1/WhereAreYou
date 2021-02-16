@@ -1,15 +1,15 @@
 package ru.yodata.whereareyou.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.navigation.navGraphViewModels
-import ru.yodata.whereareyou.MySender
-import ru.yodata.whereareyou.R
-import ru.yodata.whereareyou.databinding.FragmentLocationRequestBinding
+import com.androidisland.vita.VitaOwner
+import com.androidisland.vita.vita
+import ru.yodata.whereareyou.*
 import ru.yodata.whereareyou.databinding.FragmentSendLocationBinding
 import ru.yodata.whereareyou.model.LocationMessage
 import ru.yodata.whereareyou.model.LocationMessageType
@@ -32,8 +32,11 @@ private const val ARG_PARAM2 = "param2"
  */
 class SendLocationFragment : Fragment(R.layout.fragment_send_location) {
 
-    // ViewModel хранит последнее полученное значение Location, привязана к навигационному графу
-    private val lastLocationViewModel: LastLocationViewModel by navGraphViewModels(R.id.nav_graph)
+    // ViewModel хранит последнее полученное значение Location
+    private val lastLocationViewModel  by lazy {
+        vita.with(VitaOwner.Multiple(this)).getViewModel<LastLocationViewModel>()
+    }
+    //private val lastLocationViewModel: LastLocationViewModel by navGraphViewModels(R.id.nav_graph)
 
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -54,6 +57,8 @@ class SendLocationFragment : Fragment(R.layout.fragment_send_location) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        Log.d(TAG,"Старт метода: ${this::class.java.simpleName}:" +
+                "${object {}.javaClass.getEnclosingMethod().getName()}")
         super.onViewCreated(view, savedInstanceState)
         // Необходимо для View Binding:
         _sendLocFrag = FragmentSendLocationBinding.bind(view)
@@ -77,15 +82,25 @@ class SendLocationFragment : Fragment(R.layout.fragment_send_location) {
             ).show()
         }
         sendLocFrag.sendLocationBtn.isEnabled = true
-        sendLocFrag.sendLocationBtn.setOnClickListener { view -> sendButtonListener(view) }
+        sendLocFrag.sendLocationBtn.setOnClickListener { button ->
+            sendButtonListener(button)
+            requireActivity().onBackPressed() }
+
+        Log.d(TAG,"Финиш метода: ${this::class.java.simpleName}:" +
+                "${object {}.javaClass.getEnclosingMethod().getName()}")
     }
 
     override fun onDestroyView() {
+        Log.d(TAG,"Старт метода: ${this::class.java.simpleName}:" +
+                "${object {}.javaClass.getEnclosingMethod().getName()}")
         super.onDestroyView()
         // Необходимо для View Binding:
         _sendLocFrag = null
+        Log.d(TAG,"Финиш метода: ${this::class.java.simpleName}:" +
+                "${object {}.javaClass.getEnclosingMethod().getName()}")
     }
 
+    // Обработчик посылки данных о своем местоположении
     fun sendButtonListener(view: View) {
         with(sendLocFrag) {
             MySender.sendLocationMessage(requireContext(),

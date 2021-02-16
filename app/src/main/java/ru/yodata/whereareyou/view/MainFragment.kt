@@ -1,6 +1,7 @@
 package ru.yodata.whereareyou.view
 
 import android.Manifest
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -67,9 +68,10 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         super.onViewCreated(view, savedInstanceState)
         _mainFrag = FragmentMainBinding.bind(view)
         // Кнопка перехода на экран работы с GPS и картой
-        mainFrag.getLocationBtn.setOnClickListener{ view ->
-                view.findNavController()
-                .navigate(R.id.action_mainFragment_to_locationRequestFragment)}
+        mainFrag.getLocationBtn.setOnClickListener {
+            startActivity(Intent(requireContext(), ReceiverActivity::class.java)) }
+            /*view.findNavController()
+                .navigate(R.id.action_mainFragment_to_receiverActivity)}  //action_mainFragment_to_locationRequestFragment)}*/
     }
 
     override fun onDestroyView() {

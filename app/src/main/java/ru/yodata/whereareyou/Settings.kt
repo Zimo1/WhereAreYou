@@ -3,7 +3,7 @@ package ru.yodata.whereareyou
 import android.graphics.Color
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
-import java.lang.Double.min
+import java.util.*
 
 const val TAG = "WHEREAREYOU"
 // Константы цветов:
@@ -71,6 +71,17 @@ fun correctLatLngBounds(onePoint: LatLng, anotherPoint : LatLng) : LatLngBounds 
     val northeast = LatLng(Math.max(onePoint.latitude, anotherPoint.latitude),
                             Math.max(onePoint.longitude, anotherPoint.longitude))
     return LatLngBounds(southwest, northeast)
+}
+
+/*inline fun currentClassAndMethod(thisClass: Any) : String {
+    return "${thisClass::class.java.simpleName}:${object{}.javaClass.getEnclosingMethod().getName()}"
+}*/
+/*inline fun currentClassAndMethod(thisClass: Any) : String  { thisClass ->
+     "${thisClass::class.java.simpleName}:${object{}.javaClass.getEnclosingMethod().getName()}"
+}*/
+//val methodName = ""${this::class.java.simpleName}:${object{}.javaClass.getEnclosingMethod().getName()}""
+ inline fun Any.currentClassAndMethod(method: () -> String) : String  {
+     return "${this::class.java.simpleName}:${method()}"
 }
 
 class Settings {

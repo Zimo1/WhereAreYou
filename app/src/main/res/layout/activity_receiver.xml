@@ -204,4 +204,5 @@
         app:constraint_referenced_ids="scopeTextView12,meScopeBtn,senderScopeBtn,togetherScopeBtn"
         tools:layout_editor_absoluteX="5dp"
         tools:layout_editor_absoluteY="5dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

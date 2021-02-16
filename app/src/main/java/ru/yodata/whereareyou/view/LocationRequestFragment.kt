@@ -9,13 +9,15 @@ import android.location.LocationManager
 import android.os.Build
 import androidx.fragment.app.Fragment
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.navigation.findNavController
-import androidx.navigation.navGraphViewModels
+import com.androidisland.vita.VitaOwner
+import com.androidisland.vita.vita
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -33,8 +35,11 @@ private val locationFrag get() = _locationFrag!!
 // Фрагмент, в котором происходит работа с GPS и картой
 class LocationRequestFragment : Fragment(R.layout.fragment_location_request) { //, LocationListenable {
 
-    // ViewModel хранит последнее полученное значение Location, привязана к навигационному графу
-    private val lastLocationViewModel: LastLocationViewModel by navGraphViewModels(R.id.nav_graph)
+    // ViewModel хранит последнее полученное значение Location
+    private val lastLocationViewModel  by lazy {
+        vita.with(VitaOwner.Multiple(this)).getViewModel<LastLocationViewModel>()
+    }
+    //private val lastLocationViewModel: LastLocationViewModel by navGraphViewModels(R.id.nav_graph)
     private lateinit var myMap: GoogleMap // Хранит ссылку на готовую карту
     private var mapReady = false // Флаг "Карта готова к работе"
     private var gpsFixed = false // Флаг "Фикс произошел"
@@ -183,6 +188,8 @@ class LocationRequestFragment : Fragment(R.layout.fragment_location_request) { /
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        Log.d(TAG,"Старт метода: ${this::class.java.simpleName}:" +
+                "${object {}.javaClass.getEnclosingMethod().getName()}")
         super.onViewCreated(view, savedInstanceState)
         // Необходимо для View Binding:
         _locationFrag = FragmentLocationRequestBinding.bind(view)
@@ -190,9 +197,13 @@ class LocationRequestFragment : Fragment(R.layout.fragment_location_request) { /
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(mapReadyCallback)
         // Назначить лиснер кнопке перехода на экран передачи местоположения другому пользователю
-        locationFrag.toSendLocationScreenBtn.setOnClickListener{ view ->
-            view.findNavController()
+        locationFrag.toSendLocationScreenBtn.setOnClickListener{ button ->
+            button.findNavController()
                 .navigate(R.id.action_locationRequestFragment_to_sendLocationFragment)}
+
+        Log.d(TAG,"Финиш метода: ${this::class.java.simpleName}:" +
+                "${object {}.javaClass.getEnclosingMethod().getName()}")
+
     }
 
     @SuppressLint("MissingPermission")

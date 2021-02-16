@@ -12,6 +12,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -40,6 +41,8 @@
         </activity>
 
         <activity android:name=".view.ReceiverActivity">
+        <!--android:parentActivityName=".view.MainFragment">  добавляет стрелку на главный экран
+                                                            в левом верхнем углу-->
         </activity>
 
         <receiver

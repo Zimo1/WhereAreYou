@@ -63,7 +63,7 @@ fun String.convertToLocationMessage(phoneNumber: String) : LocationMessage {
 data class LocationMessage(
         var id: Int = 0, // Идентификатор данного сообщения
         var requestId: Int = 0, // Идентификатор запроса, ответом на который является данное сообщение
-        var type: LocationMessageType = LocationMessageType.REQUEST, // Тип сообщения, enam, см. ниже
+        var type: LocationMessageType = LocationMessageType.EMPTY, // Тип сообщения, enam, см. ниже
         var incoming: Boolean = true, // Сообщение входящее или исходящее
         var location: Location = Location(LocationManager.GPS_PROVIDER), // Стандартные данные локации отправителя
         var chargingPercentage: Int = 0, // Процент зарядки аккумулятора смартфона отправителя
@@ -85,6 +85,7 @@ data class LocationMessage(
             LocationMessageType.FULL_REQUEST -> REQUEST
             LocationMessageType.ANSWER -> ANSWER
             LocationMessageType.INFO -> INFO
+            else -> "?"// TODO: неизвестный тип сообщения, так быть не должно - обработать ошибку
         })
         // если есть данные о локации, добавить их в сообщение
         if ((location.latitude > 0) && (location.longitude > 0)) {
@@ -117,6 +118,7 @@ data class LocationMessage(
 
 // Тип сообщения
 enum class LocationMessageType {
+    EMPTY, // Пустое
     REQUEST, // Запрос локации у абонента
     FULL_REQUEST, // Запрос локации у абонента, содержащий в себе локацию запрашивающего
     ANSWER, // Ответ на запрос локации абонентом

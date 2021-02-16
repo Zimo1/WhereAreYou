@@ -40,4 +40,5 @@
     <string name="abonentScopeBtn_label">Абонент</string>
     <string name="togetherScopeBtn_label">Вместе</string>
     <string name="receiver_screen_answer_title">Поступил ответ на ваш запрос местоположения</string>
+    <string name="receiver_screen_define_title">Определение своего местоположения</string>
 </resources>
