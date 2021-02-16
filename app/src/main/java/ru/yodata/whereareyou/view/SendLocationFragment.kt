@@ -85,6 +85,9 @@ class SendLocationFragment : Fragment(R.layout.fragment_send_location) {
         sendLocFrag.sendLocationBtn.setOnClickListener { button ->
             sendButtonListener(button)
             requireActivity().onBackPressed() }
+        sendLocFrag.commentClearBtn.setOnClickListener {
+            sendLocFrag.commentTvEd.setText("")
+        }
 
         Log.d(TAG,"Финиш метода: ${this::class.java.simpleName}:" +
                 "${object {}.javaClass.getEnclosingMethod().getName()}")

@@ -34,7 +34,7 @@
     <string name="make_request_cbox_label">Request the recipient\'s location</string>
     <string name="receiver_screen_request_title">Incoming request for your location from outside</string>
     <string name="receiver_screen_info_title">Location received</string>
-    <string name="location_request_screen_header">" My location searching"</string>
+    <string name="location_request_screen_header">" Abonent location request"</string>
     <string name="sendAnswerBtn_label">Inform</string>
     <string name="cancelAnswerBtn_label">Cancel</string>
     <string name="show_scope_label">Show:</string>
@@ -43,4 +43,7 @@
     <string name="togetherScopeBtn_label">Both</string>
     <string name="receiver_screen_answer_title">Received a response to your location request</string>
     <string name="receiver_screen_define_title">Determining your location</string>
+    <string name="receiver_screen_default_comment">I\'m here</string>
+    <string name="sendRequestBtn_label">Request</string>
+    <string name="request_screen_default_comment">Where are you?</string>
 </resources>

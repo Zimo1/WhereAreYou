@@ -24,15 +24,15 @@
     <string name="itsme_msg">Это я!</string>
     <string name="gps_provider_on_msg">GPS включен</string>
     <string name="send_location_screen_title">Передать местоположение</string>
-    <string name="comment_label">Комментарий:</string>
-    <string name="recipient_label">Кому (номер телефона):</string>
+    <string name="comment_label">Введите комментарий:</string>
+    <string name="recipient_label">Адресат (номер телефона):</string>
     <string name="contactListBtn_label">Контакты</string>
     <string name="sendLocationBtn_label">Передать</string>
     <string name="toSendLocationScreenBtn_label">Передать</string>
     <string name="make_request_cbox_label">Запросить местоположение получателя</string>
     <string name="receiver_screen_request_title">Поступил запрос вашего местоположения от абонента</string>
     <string name="receiver_screen_info_title">Вам сообщают о своем местоположении</string>
-    <string name="location_request_screen_header">Определение своего местоположения</string>
+    <string name="location_request_screen_header">Запросить местоположение абонента</string>
     <string name="sendAnswerBtn_label">Сообщить</string>
     <string name="cancelAnswerBtn_label">Отменить</string>
     <string name="show_scope_label">Показать:</string>
@@ -41,4 +41,7 @@
     <string name="togetherScopeBtn_label">Вместе</string>
     <string name="receiver_screen_answer_title">Поступил ответ на ваш запрос местоположения</string>
     <string name="receiver_screen_define_title">Определение своего местоположения</string>
+    <string name="receiver_screen_default_comment">Я здесь</string>
+    <string name="sendRequestBtn_label">Запросить</string>
+    <string name="request_screen_default_comment">Где ты?</string>
 </resources>

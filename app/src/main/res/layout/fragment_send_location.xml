@@ -51,14 +51,14 @@
 
     <TextView
         android:id="@+id/longitudeTv"
+        style="@style/CommonValueStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/no_gps_signal_msg"
         app:layout_constraintStart_toEndOf="@+id/textView5"
-        app:layout_constraintTop_toBottomOf="@+id/latitudeTv"
-        style="@style/CommonValueStyle" />
+        app:layout_constraintTop_toBottomOf="@+id/latitudeTv" />
 
     <TextView
         android:id="@+id/altitudeLbl"
@@ -72,14 +72,14 @@
 
     <TextView
         android:id="@+id/altitudeTv"
+        style="@style/CommonValueStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/no_gps_signal_msg"
         app:layout_constraintStart_toEndOf="@+id/altitudeLbl"
-        app:layout_constraintTop_toBottomOf="@+id/accuracyTv"
-        style="@style/CommonValueStyle" />
+        app:layout_constraintTop_toBottomOf="@+id/accuracyTv" />
 
     <TextView
         android:id="@+id/textView9"
@@ -93,14 +93,14 @@
 
     <TextView
         android:id="@+id/speedTv"
+        style="@style/CommonValueStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/no_gps_signal_msg"
         app:layout_constraintStart_toEndOf="@+id/textView9"
-        app:layout_constraintTop_toBottomOf="@+id/altitudeTv"
-        style="@style/CommonValueStyle" />
+        app:layout_constraintTop_toBottomOf="@+id/altitudeTv" />
 
     <TextView
         android:id="@+id/textView11"
@@ -114,25 +114,25 @@
 
     <TextView
         android:id="@+id/timeTv"
+        style="@style/CommonValueStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/no_gps_signal_msg"
         app:layout_constraintStart_toEndOf="@+id/textView11"
-        app:layout_constraintTop_toBottomOf="@+id/speedTv"
-        style="@style/CommonValueStyle" />
+        app:layout_constraintTop_toBottomOf="@+id/speedTv" />
 
     <TextView
         android:id="@+id/accuracyTv"
+        style="@style/CommonValueStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/no_gps_signal_msg"
         app:layout_constraintStart_toEndOf="@+id/textView6"
-        app:layout_constraintTop_toBottomOf="@+id/longitudeTv"
-        style="@style/CommonValueStyle" />
+        app:layout_constraintTop_toBottomOf="@+id/longitudeTv" />
 
     <TextView
         android:id="@+id/textView6"
@@ -160,23 +160,25 @@
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginTop="8dp"
+        android:background="@drawable/edit_text_style"
         android:ems="10"
         android:gravity="start|top"
         android:inputType="textMultiLine"
-        android:text="Тест"
+        android:padding="5dp"
+        android:text="@string/receiver_screen_default_comment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
     <TextView
         android:id="@+id/textView8"
+        style="@style/CommonLabelStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/recipient_label"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/commentTvEd"
-        style="@style/CommonLabelStyle"/>
+        app:layout_constraintTop_toBottomOf="@+id/commentTvEd" />
 
     <EditText
         android:id="@+id/recipientPhoneTvEd"
@@ -186,7 +188,7 @@
         android:layout_marginTop="8dp"
         android:ems="10"
         android:inputType="phone"
-        android:text="+79512120399"
+        android:text="+7"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
@@ -228,5 +230,14 @@
         android:text="@string/make_request_cbox_label"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recipientPhoneTvEd" />
+
+    <ImageButton
+        android:id="@+id/commentClearBtn"
+        android:layout_width="27dp"
+        android:layout_height="26dp"
+        android:layout_marginBottom="1dp"
+        android:src="@android:drawable/btn_dialog"
+        app:layout_constraintBottom_toTopOf="@+id/commentTvEd"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

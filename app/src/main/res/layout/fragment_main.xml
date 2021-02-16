@@ -20,13 +20,27 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/getLocationBtn"
+        android:id="@+id/toSendLocationBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Передать координаты"
+        android:layout_marginTop="32dp"
+        android:text="Передать свои координаты"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/toRequestLocationBtn" />
+
+    <Button
+        android:id="@+id/toRequestLocationBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Запросить местоположение"
+        app:layout_constraintBottom_toTopOf="@+id/toSendLocationBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_chainStyle="packed" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,6 +3,7 @@ package ru.yodata.whereareyou
 import android.graphics.Color
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
+import java.io.Serializable
 import java.util.*
 
 const val TAG = "WHEREAREYOU"
@@ -14,7 +15,11 @@ const val ALL_RIGHT_COLOR = Color.GREEN //0xFF669900 // Зеленый
 const val MAX_USER_MESSAGE_SIZE = 300 // Максимальная длина комментария пользователя к локации
 const val APPREF = "https://link.to.setup.this.app.com" // Ссылка в Google Play на установку этого приложения
 
-const val SMS_BUNDLE_KEY = "SMS" // Ключ для передачи данных SMS через интент в MySmsReceiver
+const val SMS_BUNDLE_KEY = "SMS" // Ключ для передачи данных SMS через интент из MySmsReceiver
+                                // в ReceiverActivity
+const val MODE_BUNDLE_KEY = "MODE" // Ключ для передачи режима запуска ReceiverActivity через
+                            // интент (ReceiverActivity может быть запущено пользователем либо
+                            // MySmsReceiver автоматически при получении SMS)
 
 // Служебные символы и строки сообщения LocationMessage
 const val SEPARATOR = " " // Разделитель значений в тексте SMS
@@ -49,10 +54,17 @@ const val AUTODETECTED = "U" // Координаты были определен
     const val FALSE_VALUE = "F"
 const val LINK = "L" // Ссылка в Google Play на установку этого приложения
 
+// Режимы отображения карты на экране
 enum class MapScope {
-    ME_SCOPE,
-    SENDER_SCOPE,
-    TOGETHER_SCOPE
+    ME_SCOPE, // В центре пользователь
+    SENDER_SCOPE, // В центре абонент
+    TOGETHER_SCOPE // Карта автоматически масштабируется так, чтобы были одновременно видны обе точки
+}
+// Режимы запуска ReceiverActivity
+enum class ReceiverActivityMode : Serializable {
+    SMS, // при получении SMS
+    EMPTY, // без данных LocationMessage
+    VIEWING // режим просмотра сохраненного LocationMessage
 }
 
 // Функция определяет находся ли одна точка севернее другой
@@ -65,6 +77,8 @@ fun LatLng.easterly(point: LatLng) : Boolean {
     return this.longitude > point.longitude
 }
 
+// Функция усовершенствует стандартную функцию LatLngBounds.
+// Теперь угловые точки прямоугольника можно указывать в любом порядке
 fun correctLatLngBounds(onePoint: LatLng, anotherPoint : LatLng) : LatLngBounds {
     val southwest = LatLng(Math.min(onePoint.latitude, anotherPoint.latitude),
                             Math.min(onePoint.longitude, anotherPoint.longitude))
@@ -80,9 +94,9 @@ fun correctLatLngBounds(onePoint: LatLng, anotherPoint : LatLng) : LatLngBounds 
      "${thisClass::class.java.simpleName}:${object{}.javaClass.getEnclosingMethod().getName()}"
 }*/
 //val methodName = ""${this::class.java.simpleName}:${object{}.javaClass.getEnclosingMethod().getName()}""
- inline fun Any.currentClassAndMethod(method: () -> String) : String  {
+ /*inline fun Any.currentClassAndMethod(method: () -> String) : String  {
      return "${this::class.java.simpleName}:${method()}"
-}
+}*/
 
 class Settings {
     companion object {

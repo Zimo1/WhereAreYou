@@ -6,34 +6,21 @@
     app:startDestination="@id/mainFragment">
 
     <fragment
-        android:id="@+id/locationRequestFragment"
-        android:name="ru.yodata.whereareyou.view.LocationRequestFragment"
-        android:label="fragment_location_request"
-        tools:layout="@layout/fragment_location_request" >
-        <action
-            android:id="@+id/action_locationRequestFragment_to_sendLocationFragment"
-            app:destination="@id/sendLocationFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/mainFragment"
         android:name="ru.yodata.whereareyou.view.MainFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main" >
         <action
+            android:id="@+id/action_mainFragment_to_receive_nav_graph"
+            app:destination="@id/receive_nav_graph" />
+        <action
             android:id="@+id/action_mainFragment_to_locationRequestFragment"
             app:destination="@id/locationRequestFragment" />
-        <action
-            android:id="@+id/action_mainFragment_to_receiverActivity"
-            app:destination="@id/receiverActivity" />
     </fragment>
+    <include app:graph="@navigation/receive_nav_graph" />
     <fragment
-        android:id="@+id/sendLocationFragment"
-        android:name="ru.yodata.whereareyou.view.SendLocationFragment"
-        android:label="fragment_send_location"
-        tools:layout="@layout/fragment_send_location" />
-    <activity
-        android:id="@+id/receiverActivity"
-        android:name="ru.yodata.whereareyou.view.ReceiverActivity"
-        android:label="activity_receiver"
-        tools:layout="@layout/activity_receiver" />
+        android:id="@+id/locationRequestFragment"
+        android:name="ru.yodata.whereareyou.view.LocationRequestFragment"
+        android:label="fragment_location_request"
+        tools:layout="@layout/fragment_location_request" />
 </navigation>

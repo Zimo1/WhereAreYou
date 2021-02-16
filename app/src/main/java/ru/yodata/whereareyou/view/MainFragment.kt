@@ -8,8 +8,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.findNavController
+import ru.yodata.whereareyou.MODE_BUNDLE_KEY
 import ru.yodata.whereareyou.PermissionsAccess
 import ru.yodata.whereareyou.R
+import ru.yodata.whereareyou.ReceiverActivityMode
 import ru.yodata.whereareyou.databinding.FragmentMainBinding
 
 // Инициализация View Binding
@@ -67,11 +69,15 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _mainFrag = FragmentMainBinding.bind(view)
-        // Кнопка перехода на экран работы с GPS и картой
-        mainFrag.getLocationBtn.setOnClickListener {
-            startActivity(Intent(requireContext(), ReceiverActivity::class.java)) }
-            /*view.findNavController()
-                .navigate(R.id.action_mainFragment_to_receiverActivity)}  //action_mainFragment_to_locationRequestFragment)}*/
+        // Кнопка перехода на экран передачи своей локации абоненту ReceiverActivity
+        mainFrag.toSendLocationBtn.setOnClickListener {
+            startActivity(Intent(requireContext(), ReceiverActivity::class.java).apply {
+                putExtra(MODE_BUNDLE_KEY, ReceiverActivityMode.EMPTY)}
+            ) }
+        // Кнопка перехода на экран запроса локации у абонента LocationRequestFragment
+        mainFrag.toRequestLocationBtn.setOnClickListener { button ->
+                button.findNavController()
+                    .navigate(R.id.action_mainFragment_to_locationRequestFragment) }
     }
 
     override fun onDestroyView() {

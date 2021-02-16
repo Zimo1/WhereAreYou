@@ -18,11 +18,11 @@ import java.util.*
 class MySmsReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         Log.d(TAG, "BroadcastReceiver запущен!")
-        Toast.makeText(
+        /*Toast.makeText(
             context,
             "BroadcastReceiver запущен!",
             Toast.LENGTH_LONG
-        ).show()
+        ).show()*/
         val bundle = intent?.extras // получить данные интента (SMS)
         if (bundle != null) {
             Log.d(TAG, "BroadcastReceiver extras содержит данные")
@@ -43,16 +43,15 @@ class MySmsReceiver : BroadcastReceiver() {
                 val smsData = PlainSms(
                         phoneNumber = smsParts[0].displayOriginatingAddress, // номер телефона отправителя
                         time = Date(), // текущее время и дата
-                        // сам текст , склееный из частей
+                        // сам текст SMS, склееный из частей, если их несколько
                         smsText = smsParts.joinToString("") {it -> it.displayMessageBody}
                 )
                 val startIntent = Intent(context, ReceiverActivity::class.java).apply {
                     putExtra(SMS_BUNDLE_KEY, smsData)
-                    //setClassName(context!!.packageName, ReceiverActivity::class.simpleName!!)
-                    //setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)} // без этого флага будет вылет
+                    putExtra(MODE_BUNDLE_KEY, ReceiverActivityMode.SMS)
                     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)} // без этого флага будет вылет
-                Log.d(TAG, "Отправлен интент на запуск ReceiverActivity")
                 context!!.startActivity(startIntent) // запуск интента
+                Log.d(TAG, "Отправлен интент на запуск ReceiverActivity")
                 abortBroadcast() // не пропускать эту SMS дальше, чтобы она не появилась в списке SMS - не работает
             }
         }
