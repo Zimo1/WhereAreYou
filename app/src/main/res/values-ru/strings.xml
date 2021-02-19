@@ -44,4 +44,9 @@
     <string name="receiver_screen_default_comment">Я здесь</string>
     <string name="sendRequestBtn_label">Запросить</string>
     <string name="request_screen_default_comment">Где ты?</string>
+    <string name="notification_channel_name">Сообщения приложения Where Are You</string>
+    <string name="notification_channel_description">Поступление запросов вашего местоположения от других пользователей</string>
+    <string name="notification_content_text">Cрочное сообщение о местоположении!</string>
+    <string name="distance_label">Расстояние:</string>
+    <string name="start_phone_shablon">+7</string>
 </resources>

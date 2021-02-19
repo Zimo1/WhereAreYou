@@ -46,4 +46,9 @@
     <string name="receiver_screen_default_comment">I\'m here</string>
     <string name="sendRequestBtn_label">Request</string>
     <string name="request_screen_default_comment">Where are you?</string>
+    <string name="notification_channel_name">Where Are You app messages</string>
+    <string name="notification_channel_description">Receiving requests for your location from other users</string>
+    <string name="notification_content_text">Urgent message about the location of that person!</string>
+    <string name="distance_label">Distance:</string>
+    <string name="start_phone_shablon">+</string>
 </resources>

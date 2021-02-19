@@ -1,12 +1,29 @@
 package ru.yodata.whereareyou
 
+import android.R
+import android.content.SharedPreferences
 import android.graphics.Color
+import android.location.Location.distanceBetween
+import android.net.Uri
+import android.util.Log
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import java.io.Serializable
+import java.lang.Math.round
+import java.math.BigDecimal
 import java.util.*
 
-const val TAG = "WHEREAREYOU"
+
+const val TAG = "WHEREAREYOU" // тег, используется везде, где нужен тег, указывающий на данное
+            // приложение: для команды логирования Log.d(TAG, "..."), для создания notification
+const val CHANNEL_ID = "ru.yodata.whereareyou" // id канала нотификаций
+const val MY_PREFERENCES = "whereareyouprefs" // название файла SharedPreferences
+lateinit var mySharedPreferences: SharedPreferences // сюда будет записана ссылка на
+            // SharedPreferences, чтобы не вычислять ее каждый раз при обращении к SharedPreferences
+const val MESSAGE_ID = "mid" // переменная счетчика id сообщений о локациях в SharedPreferences
+const val START_MESSAGE_ID = 1 // начальное значение переменной MESSAGE_ID в SharedPreferences
+lateinit var notificationSound: Uri // звук нотификации
+
 // Константы цветов:
 const val ALERT_COLOR = Color.RED //0xFFCC0000 // Красный
 const val PREPARE_COLOR = Color.BLUE //0xFFFFBB33 // Желтый
@@ -21,12 +38,13 @@ const val MODE_BUNDLE_KEY = "MODE" // Ключ для передачи режи�
                             // интент (ReceiverActivity может быть запущено пользователем либо
                             // MySmsReceiver автоматически при получении SMS)
 
-// Служебные символы и строки сообщения LocationMessage
+// Служебные символы и литералы, использующиеся в сообщении LocationMessage
 const val SEPARATOR = " " // Разделитель значений в тексте SMS
-const val PREFIX = "Δ" // Префикс аргумента (по нему определяется начало аргумента) - не должен встречаться в комментарии SMS
-const val EQALITY = "=" // Знак равенства (или знак, предшествующий значению аргумента)
-const val EQALITY_LENGHT = EQALITY.length // Длина команды EQALITY
-const val SMS_HEADER = ":->GPS" // Заголовок SMS - именно по наличию этих символов в
+const val PREFIX = "Δ" // Префикс аргумента (по нему определяется начало аргумента) - не должен
+                    // встречаться в комментарии SMS
+const val EQALITY = "=" // Знак равенства (т.е. любой знак, предшествующий значению аргумента)
+const val EQALITY_LENGHT = EQALITY.length // Длина литерала EQALITY
+const val SMS_HEADER = ":->GPS-" // Заголовок SMS - именно по наличию этих символов в
             // начале SMS обработчик определяет, что данное SMS имеет отношение к приложению
 const val SMS_HEADER_LENGHT = SMS_HEADER.length // Длина заголовка SMS
 const val VERSION = "01" // Версия приложения, в котором было создано SMS. Используется чтобы понимать
@@ -64,7 +82,7 @@ enum class MapScope {
 enum class ReceiverActivityMode : Serializable {
     SMS, // при получении SMS
     EMPTY, // без данных LocationMessage
-    VIEWING // режим просмотра сохраненного LocationMessage
+    VIEWING // режим просмотра сохраненного ранее LocationMessage
 }
 
 // Функция определяет находся ли одна точка севернее другой
@@ -78,29 +96,33 @@ fun LatLng.easterly(point: LatLng) : Boolean {
 }
 
 // Функция усовершенствует стандартную функцию LatLngBounds.
-// Теперь угловые точки прямоугольника можно указывать в любом порядке
-fun correctLatLngBounds(onePoint: LatLng, anotherPoint : LatLng) : LatLngBounds {
+// Теперь угловые диагональные точки прямоугольника можно указывать в любом порядке
+fun correctLatLngBounds(onePoint: LatLng, anotherPoint: LatLng) : LatLngBounds {
     val southwest = LatLng(Math.min(onePoint.latitude, anotherPoint.latitude),
-                            Math.min(onePoint.longitude, anotherPoint.longitude))
+            Math.min(onePoint.longitude, anotherPoint.longitude))
     val northeast = LatLng(Math.max(onePoint.latitude, anotherPoint.latitude),
-                            Math.max(onePoint.longitude, anotherPoint.longitude))
+            Math.max(onePoint.longitude, anotherPoint.longitude))
     return LatLngBounds(southwest, northeast)
 }
 
-/*inline fun currentClassAndMethod(thisClass: Any) : String {
-    return "${thisClass::class.java.simpleName}:${object{}.javaClass.getEnclosingMethod().getName()}"
-}*/
-/*inline fun currentClassAndMethod(thisClass: Any) : String  { thisClass ->
-     "${thisClass::class.java.simpleName}:${object{}.javaClass.getEnclosingMethod().getName()}"
-}*/
-//val methodName = ""${this::class.java.simpleName}:${object{}.javaClass.getEnclosingMethod().getName()}""
- /*inline fun Any.currentClassAndMethod(method: () -> String) : String  {
-     return "${this::class.java.simpleName}:${method()}"
-}*/
+fun showDistance(onePoint: LatLng, anotherPoint: LatLng) : String {
+    var result = floatArrayOf(0f,0f,0f,0f)
+    Log.d(TAG, "Начинаю вычисление дистанции")
+    distanceBetween(onePoint.latitude, onePoint.longitude,
+            anotherPoint.latitude, anotherPoint.longitude, result )
+    Log.d(TAG, "Закончил вычисление дистанции")
+    val distance = result[0]
+    Log.d(TAG, "Дистанция = $distance")
+    if (distance > 50000F) return "${distance*0.001.toInt()} км"
+    else
+        if (distance >= 1000F) return "${"%.2f".format(distance)} км"
+        else return "${distance.toInt()} м"
+    //return "100 м"
+}
 
 class Settings {
     companion object {
-        // Настройки locationManager.requestLocationUpdates - получение локаций от датчика GPS
+        // Настройки метода locationManager.requestLocationUpdates - получение локаций от датчика GPS
         var locationMinTimeMs: Long = 2000 // Через какое время происходит обновление локации (мс)
         var locationMinDistanceM: Float = 2.0F // При сдвиге на какое расстояние (м)
 
@@ -108,7 +130,8 @@ class Settings {
         var mapZoom = 17F // Масштаб изображения карты
         var mapTilt = 30F // Угол наклона карты к наблюдателю
         var mapPadding = 90 // Для режима показа нескольких маркеров одновременно -
-                            // поля прямоугольной области, содержащей эти маркеры
+                            // поля прямоугольной области, содержащей эти маркеры (в dp)
+        var showShortestWay: Boolean = true // Показывать ли линию между маркерами своим и абонента
 
     }
 }

@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/pa"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.MainFragment">
@@ -42,5 +43,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
         app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/textView13"
+        style="@style/CommonValueStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/edit_text_style"
+        android:padding="10dp"
+        android:text='Внимание! На смартфонах Xiaomi и возможно других китайских необходимо вручную дать приложению "Where Are You" разрешение на автозапуск (Настройки -> Приложения -> Все приложения -> Where Are You -> Автозапуск). Без этого приложение не сможет автоматически запускаться при получении SMS'
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

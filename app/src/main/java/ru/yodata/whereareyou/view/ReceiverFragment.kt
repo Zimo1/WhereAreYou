@@ -2,7 +2,7 @@ package ru.yodata.whereareyou.view
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
+import android.graphics.Color
 import android.location.GnssStatus
 import android.location.Location
 import android.location.LocationListener
@@ -106,9 +106,8 @@ class ReceiverFragment : Fragment(R.layout.fragment_receiver) {
     private val locationMessageViewModel  by lazy {
         vita.with(VitaOwner.Multiple(this)).getViewModel<LocationMessageViewModel>()
     }
-    //: LastLocationViewModel by activityViewModels() //  navGraphViewModels(R.id.nav_graph)
-    //private lateinit var myLastLocation: Location
-    //private lateinit var receivedLocationMessage: LocationMessage
+
+    private lateinit var curLocationMessageType: LocationMessageType
     private lateinit var myMap: GoogleMap // Хранит ссылку на готовую карту
     private lateinit var curMapScope : MapScope // Текущая область видимости карты
     private var mapReady = false // Флаг "Карта готова к работе"
@@ -116,6 +115,7 @@ class ReceiverFragment : Fragment(R.layout.fragment_receiver) {
     private lateinit var myMarker: Marker // Маркер своего положения на карте
     private lateinit var myPosition: LatLng // Своя позиция для отображения маркера на карте
     private lateinit var senderPosition: LatLng // Позиция абонента для отображения маркера на карте
+    private lateinit var shortestWay: Polyline // Стрелка между двумя позициями
 
     // Создание стандартного LocationManager, который обеспечивает работу с Location API
     private val locationManager : LocationManager by lazy {
@@ -176,10 +176,12 @@ class ReceiverFragment : Fragment(R.layout.fragment_receiver) {
             // Записать новую локацию
             //myLastLocation = newLocation
             lastLocationViewModel.setLocation(newLocation)
-            // Вывести на карте маркер полученной локации
+
             if (mapReady) {
-                if (::myMarker.isInitialized) myMarker.remove() // стереть предыдущий маркер с карты,
-                // если он есть
+                // стереть предыдущий маркер и стрелку с карты, если они есть
+                if (::myMarker.isInitialized) myMarker.remove()
+                if (::shortestWay.isInitialized) shortestWay.remove()
+                // Вывести на карте маркер своей определенной локации и стрелку от него к абоненту
                 with (myMap) {
                     myMarker = addMarker(MarkerOptions().title(getString(R.string.itsme_msg))
                             .position(myPosition)
@@ -188,6 +190,18 @@ class ReceiverFragment : Fragment(R.layout.fragment_receiver) {
                             //.flat(true)
                             //.rotation(newLocation.bearing)
                     )
+                    if (::senderPosition.isInitialized) {
+                        receiverFrag.distanceTv.text = showDistance(myPosition, senderPosition)
+                        if (Settings.showShortestWay) {
+                            shortestWay = addPolyline(
+                                    PolylineOptions()
+                                            .add(myPosition, senderPosition)
+                                            .width(10f)
+                                            .color(Color.RED)
+                                            .geodesic(true)
+                            )
+                        }
+                    }
                 }
                 showMapWithMarkers()
             }
@@ -205,7 +219,7 @@ class ReceiverFragment : Fragment(R.layout.fragment_receiver) {
         with (locationMessageViewModel.locationMessage.value!!) {
             // Если в текущем режиме экрана предусмотрен показ маркера местоположения другого
             // абонента, вывести маркер на экран
-            val curScreenMode = screenModes.getValue(type)
+            //val curScreenMode = screenModes.getValue(type)
             when (type) { // вывести на карте маркер полученной локации, если он есть
                 LocationMessageType.FULL_REQUEST,
                 LocationMessageType.ANSWER,
@@ -272,6 +286,18 @@ class ReceiverFragment : Fragment(R.layout.fragment_receiver) {
                 statusGpsTv.setTextColor(ru.yodata.whereareyou.ALL_RIGHT_COLOR)
                 // Убрать прогрессбар
                 gpsProgressBar.visibility = android.view.View.INVISIBLE
+                // Включить кнопки скоупов
+                meScopeBtn.isEnabled = true
+                togetherScopeBtn.isEnabled = true
+                // Показать данные о дистанции между маркерами
+                when (curLocationMessageType) {
+                    LocationMessageType.FULL_REQUEST,
+                    LocationMessageType.ANSWER,
+                    LocationMessageType.INFO -> {
+                        distanceLabel.visibility = View.VISIBLE
+                        distanceTv.visibility = View.VISIBLE
+                    }
+                }
                 // Активировать кнопку перехода на экран передачи данных
                 sendAnswerBtn.isEnabled = true
             }
@@ -351,13 +377,14 @@ class ReceiverFragment : Fragment(R.layout.fragment_receiver) {
         // Заполнить экранные элементы значениями из вьюмодели
         with (locationMessageViewModel.locationMessage.value!!) {
             with (receiverFrag) {
+                curLocationMessageType = type
                 // Заполнить элементы экрана, зависящие от типа входящего сообщения
-                val curScreenMode = screenModes.getValue(type)
-                screenHeaderTv.text = curScreenMode.screenHeader
-                abonentTv.visibility = curScreenMode.showAbonentNumberAndComment
-                commentTv.visibility = curScreenMode.showAbonentNumberAndComment
-                scopeButtonsGroup.visibility = curScreenMode.showScopeButtons
-                curMapScope = curScreenMode.startMapScope
+                val curScreenSettings = screenModes.getValue(type)
+                screenHeaderTv.text = curScreenSettings.screenHeader
+                abonentTv.visibility = curScreenSettings.showAbonentNumberAndComment
+                commentTv.visibility = curScreenSettings.showAbonentNumberAndComment
+                scopeButtonsGroup.visibility = curScreenSettings.showScopeButtons
+                curMapScope = curScreenSettings.startMapScope
                 // Заполнить элементы экрана, не зависящие от типа входящего сообщения
                 abonentTv.text = abonentPhoneNumber
                 commentTv.text = comment

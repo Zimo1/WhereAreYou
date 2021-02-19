@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="5dp"
+    android:padding="3dp"
     tools:context=".view.ReceiverFragment">
 
     <TextView
@@ -12,7 +12,6 @@
         style="@style/CommonScreenHeaderStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:singleLine="false"
         android:text="@string/receiver_screen_request_title"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,7 +22,7 @@
         android:id="@+id/abonentTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:singleLine="false"
         android:textAlignment="center"
         android:textColor="@color/light_blue_600"
@@ -39,7 +38,7 @@
         style="@style/CommonValueStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:singleLine="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -64,7 +63,7 @@
         android:id="@+id/sendAnswerBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="6dp"
         android:text="@string/sendAnswerBtn_label"
         app:backgroundTint="@android:color/holo_green_dark"
         app:layout_constraintEnd_toStartOf="@+id/cancelAnswerBtn"
@@ -76,7 +75,7 @@
         android:id="@+id/cancelAnswerBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="6dp"
         android:text="@string/cancelAnswerBtn_label"
         app:backgroundTint="@android:color/holo_red_dark"
         app:layout_constraintEnd_toEndOf="parent"
@@ -119,7 +118,9 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="80dp"
+        android:layout_marginBottom="60dp"
+        android:background="@drawable/frame_style"
+        android:padding="4dp"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -165,6 +166,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:enabled="false"
         android:text="@string/meScopeBtn_label"
         app:backgroundTint="@color/teal_700"
         app:layout_constraintStart_toEndOf="@+id/scopeTextView12"
@@ -189,6 +191,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:enabled="false"
         android:text="@string/togetherScopeBtn_label"
         android:textSize="10sp"
         android:textStyle="bold"
@@ -198,8 +201,8 @@
 
     <ToggleButton
         android:id="@+id/toggleButton"
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
+        android:layout_width="51dp"
+        android:layout_height="50dp"
         android:layout_marginTop="8dp"
         android:checked="true"
         android:text="Автопоиск себя"
@@ -213,5 +216,31 @@
         app:constraint_referenced_ids="scopeTextView12,meScopeBtn,senderScopeBtn,togetherScopeBtn"
         tools:layout_editor_absoluteX="5dp"
         tools:layout_editor_absoluteY="5dp" />
+
+    <TextView
+        android:id="@+id/distanceLabel"
+        style="@style/CommonLabelStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/distance_label"
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@+id/gpsProgressBar"
+        app:layout_constraintTop_toBottomOf="@+id/toggleButton"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/distanceTv"
+        style="@style/CommonValueStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@+id/distanceLabel"
+        app:layout_constraintTop_toBottomOf="@+id/toggleButton"
+        tools:text="980 м"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

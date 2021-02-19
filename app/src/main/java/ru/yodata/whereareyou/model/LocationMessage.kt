@@ -5,6 +5,8 @@ import android.location.LocationManager
 import android.util.Log
 import ru.yodata.whereareyou.*
 
+// Функция проверяет строку - содержит ли она сообщение о локации в формате данного приложения,
+// либо в строке какое-то посторонее содержимое
 fun String.isConvertableToLocationMessage() : Boolean {
     return this.take(SMS_HEADER_LENGHT) == SMS_HEADER
 }
