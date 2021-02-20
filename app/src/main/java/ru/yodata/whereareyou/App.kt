@@ -10,9 +10,9 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.androidisland.vita.startVita
 
-// Класс необходим, чтобы получить доступ к библиотеке Vita, которая управляет вьюмоделями
-// https://github.com/FarshadTahmasbi/Vita
-// А так же здесь происходит создание и регистрация канала нотификаций
+// Класс необходим для начальной инициализации приложения, чтобы получить доступ к библиотеке Vita,
+// которая управляет вьюмоделями https://github.com/FarshadTahmasbi/Vita
+// Так же здесь происходит создание и регистрация канала нотификаций
 class App : Application() {
     override fun onCreate() {
         super.onCreate()
@@ -25,10 +25,8 @@ class App : Application() {
         // Звук нотификации
         notificationSound = Uri.parse("android.resource://" + packageName +
                 "/" + R.raw.echosms)
-        // Создание канала нотификации
+        // Создание канала нотификаций
         createNotificationChannel()
-
-
     }
 
     // Создание и регистрация канала нотификаций
@@ -50,9 +48,8 @@ class App : Application() {
                 setSound(notificationSound, audioAttributes)
                 enableVibration(true)
                 setShowBadge(true)
-
             }
-            // Register the channel with the system
+            // Регистрация канала в системе
             val notificationManager: NotificationManager =
                     getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)

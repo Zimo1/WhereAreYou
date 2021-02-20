@@ -64,6 +64,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
+        android:enabled="false"
         android:text="@string/sendAnswerBtn_label"
         app:backgroundTint="@android:color/holo_green_dark"
         app:layout_constraintEnd_toStartOf="@+id/cancelAnswerBtn"

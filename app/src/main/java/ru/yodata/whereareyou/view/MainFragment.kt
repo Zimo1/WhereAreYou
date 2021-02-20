@@ -30,7 +30,6 @@ val askPermissions = arrayOf<String>(
         Manifest.permission.SEND_SMS,
         Manifest.permission.READ_CONTACTS,
         Manifest.permission.READ_PHONE_STATE // для данных о SIM-картах
-        //Manifest.permission.SYSTEM_ALERT_WINDOW // чтобы можно было запускать Activity из фона
 
 )
 

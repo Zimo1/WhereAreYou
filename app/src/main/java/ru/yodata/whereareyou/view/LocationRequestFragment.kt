@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 //import com.google.android.gms.maps.model.*
 import ru.yodata.whereareyou.*
 import ru.yodata.whereareyou.databinding.FragmentLocationRequestBinding
@@ -41,6 +42,13 @@ class LocationRequestFragment : Fragment(R.layout.fragment_location_request) {
             requireActivity().onBackPressed() // вернуться на предыдущий экран
         }
 
+        locationFrag.contactListBtn2.setOnClickListener {
+            Toast.makeText(
+                    requireContext(),
+                    "Выбор из Контактов пока не реализован. Введите номер вручную",
+                    Toast.LENGTH_LONG
+            ).show()
+        }
         Log.d(TAG,"Финиш метода: ${this::class.java.simpleName}:" +
                 "${object {}.javaClass.getEnclosingMethod().getName()}")
 
