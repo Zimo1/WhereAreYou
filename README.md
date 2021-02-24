@@ -27,7 +27,7 @@
 -	Android Architecture Components
 -	View Binding
 -	Navigation Architecture Component
--	API: Permissions, Location, SmsManager, Google Maps.
+-	API: Permissions, Location, SmsManager, Notifications, Google Maps.
 
 У приложения 2 локали: русская и английская (по умолчанию).
 
